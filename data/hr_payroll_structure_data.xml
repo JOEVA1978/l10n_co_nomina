@@ -16,9 +16,6 @@
             <field name="type_id" ref="l10n_co_nomina.hr_payroll_structure_type_co"/>
             <field name="country_id" ref="base.co"/>
             <field name="report_id" ref="hr_payroll.action_report_payslip"/>
-            <!-- CORRECCIÓN: Se descomentó y se asignó el diario de salarios estándar -->
-            <field name="journal_id" ref="account.1_hr_payroll_account_journal"/>
-            <!-- El campo rule_ids se llenará en un archivo posterior -->
         </record>
     </data>
 </odoo>
