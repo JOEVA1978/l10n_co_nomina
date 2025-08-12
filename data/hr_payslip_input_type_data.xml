@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="0">
+        <!-- Tipos de Entrada de Nómina para Colombia -->
+
+        <!-- Entradas AÚN EN USO por reglas salariales -->
+
+        <record id="input_type_workday" model="hr.payslip.input.type">
+            <field name="name">Días Trabajados (WORKDAY)</field>
+            <field name="code">WORKDAY</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Número de días a pagar en el periodo (usado para prorrateos).</field> --> <!-- Campo eliminado -->
+            <!-- struct_ids: Asocia esta entrada a las estructuras salariales donde se usará -->
+            <!-- Ejemplo: <field name="struct_ids" eval="[(4, ref('l10n_co_nomina.hr_payroll_structure_co_base'))]"/> -->
+        </record>
+
+        <record id="input_type_vaccd" model="hr.payslip.input.type">
+            <field name="name">Valor Vacaciones Compensadas (VACCD)</field>
+            <field name="code">VACCD</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor manual para vacaciones compensadas (anula cálculo automático si se ingresa).</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_vaccd_pend_d" model="hr.payslip.input.type">
+            <field name="name">Días Pendientes Vac. Compensadas (VACCD_PEND_D)</field>
+            <field name="code">VACCD_PEND_D</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Número de días de vacaciones pendientes a compensar (usado en liquidación final).</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_hed" model="hr.payslip.input.type">
+            <field name="name">Horas Extras Diurnas (HED)</field>
+            <field name="code">HED</field>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+        <record id="input_type_hen" model="hr.payslip.input.type">
+            <field name="name">Horas Extras Nocturnas (HEN)</field>
+            <field name="code">HEN</field>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+         <record id="input_type_rn" model="hr.payslip.input.type">
+            <field name="name">Horas Recargo Nocturno (RN)</field>
+            <field name="code">RN</field>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+         <record id="input_type_heddf" model="hr.payslip.input.type">
+            <field name="name">Horas Extras Dom/Fes Diurnas (HEDDF)</field>
+            <field name="code">HEDDF</field>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+         <record id="input_type_rddf" model="hr.payslip.input.type">
+            <field name="name">Horas Recargo Dom/Fes Diurno (RDDF)</field>
+            <field name="code">RDDF</field>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+         <record id="input_type_hendf" model="hr.payslip.input.type">
+            <field name="name">Horas Extras Dom/Fes Nocturnas (HENDF)</field>
+            <field name="code">HENDF</field>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+         <record id="input_type_rndf" model="hr.payslip.input.type">
+            <field name="name">Horas Recargo Dom/Fes Nocturno (RNDF)</field>
+            <field name="code">RNDF</field>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+        <record id="input_type_comision" model="hr.payslip.input.type">
+            <field name="name">Comisiones (COMISION)</field>
+            <field name="code">COMISION</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor de comisiones devengadas en el periodo.</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <!-- APOYO_SOST se mantiene como entrada manual para permitir anulación del cálculo automático -->
+        <record id="input_type_apoyo_sost" model="hr.payslip.input.type">
+            <field name="name">Apoyo Sostenimiento Manual (APOYO_SOST)</field>
+            <field name="code">APOYO_SOST</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor manual para apoyo de sostenimiento (anula cálculo automático si se ingresa).</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_bon_retiro" model="hr.payslip.input.type">
+            <field name="name">Bonificación por Retiro (BON_RETIRO)</field>
+            <field name="code">BON_RETIRO</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor de bonificación pagada únicamente en la liquidación final del contrato.</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_reintegro" model="hr.payslip.input.type">
+            <field name="name">Reintegro (Devengo) (REINTEGRO)</field>
+            <field name="code">REINTEGRO</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor a reintegrar al empleado (devengo).</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_otro_s" model="hr.payslip.input.type">
+            <field name="name">Otro Concepto Salarial (OTRO_S)</field>
+            <field name="code">OTRO_S</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor para otros devengos salariales no cubiertos por reglas específicas.</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_otro_ns" model="hr.payslip.input.type">
+            <field name="name">Otro Concepto No Salarial (OTRO_NS)</field>
+            <field name="code">OTRO_NS</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor para otros devengos no salariales no cubiertos por reglas específicas.</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <!-- Entradas usadas DENTRO del cálculo de Retención en la Fuente -->
+        <record id="input_type_ded_dep" model="hr.payslip.input.type">
+            <field name="name">Deducción por Dependientes (DED_DEP)</field>
+            <field name="code">DED_DEP</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor mensual deducible por dependientes económicos (Máx 10% del ingreso bruto, limitado a 32 UVT/mes).</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_ded_med" model="hr.payslip.input.type">
+            <field name="name">Deducción Medicina Prepagada/Salud (DED_MED)</field>
+            <field name="code">DED_MED</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Pagos mensuales por medicina prepagada, seguros de salud o planes complementarios (Máx 16 UVT/mes).</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_ded_viv" model="hr.payslip.input.type">
+            <field name="name">Deducción Intereses Vivienda (DED_VIV)</field>
+            <field name="code">DED_VIV</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor mensual de intereses pagados por crédito de vivienda o leasing habitacional (Máx 100 UVT/mes).</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <record id="input_type_ded_afc_afp" model="hr.payslip.input.type">
+            <field name="name">Aportes Voluntarios Pensión/AFC (DED_AFP_AFC)</field>
+            <field name="code">DED_AFP_AFC</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Aportes voluntarios a fondos de pensión o cuentas AFC. Tienen límites globales con otras deducciones.</field> --> <!-- Campo eliminado -->
+        </record>
+
+        <!-- Entrada para Otras Deducciones Manuales -->
+        <record id="input_type_otra_ded" model="hr.payslip.input.type">
+            <field name="name">Otra Deducción (OTRA_DED)</field>
+            <field name="code">OTRA_DED</field>
+            <field name="country_id" ref="base.co"/>
+            <!-- <field name="description">Valor a deducir por conceptos no cubiertos por otras reglas específicas.</field> --> <!-- Campo eliminado -->
+        </record>
+
+    </data>
+</odoo>

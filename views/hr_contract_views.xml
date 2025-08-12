@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_contract_view_form_l10n_co_nomina_inherit" model="ir.ui.view">
+        <field name="name">hr.contract.form.l10n_co.nomina.inherit</field>
+        <field name="model">hr.contract</field>
+        <field name="inherit_id" ref="hr_contract.hr_contract_view_form"/>
+        <field name="arch" type="xml">
+            <!-- Localiza el notebook existente -->
+            <xpath expr="//notebook" position="inside">
+                <!-- Añade la nueva página -->
+                <page string="Nomina Co" name="nomina_co">
+                    <group>
+                        <group string="Clasificación DIAN">
+                            <field name="type_worker_id"/>
+                            <field name="subtype_worker_id"/>
+                            <field name="type_contract_id"/>
+                        </group>
+                        <group string="Condiciones Especiales">
+                            <field name="integral_salary"/>
+                            <field name="high_risk_pension"/>
+                            <field name="arl_risk_level"/>
+                        </group>
+                    </group>
+                    <group string="Afiliaciones Seguridad Social">
+                         <group>
+                            <field name="eps_id"/>
+                            <field name="pension_id"/> <!-- Nombre corregido -->
+                        </group>
+                         <group>
+                            <field name="cesantias_id"/> <!-- Nombre corregido -->
+                            <field name="ccf_id"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

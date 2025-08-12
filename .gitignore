@@ -1,1 +1,9 @@
-.qodo
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+*.log
+.DS_Store
+*.swp
+.idea/
+.vscode/

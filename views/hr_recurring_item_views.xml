@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vista TREE para hr.recurring.item.type -->
+    <record id="view_hr_recurring_item_type_tree" model="ir.ui.view">
+        <field name="name">hr.recurring.item.type.tree</field>
+        <field name="model">hr.recurring.item.type</field>
+        <field name="type">list</field> <!-- En Odoo 18, para vistas de lista, se usa 'list' en lugar de 'tree' en el type -->
+        <field name="arch" type="xml">
+            <list string="Tipos de Ítem Recurrente"> <!-- Cambiado de <tree> a <list> -->
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="item_type"/>
+                <field name="salary_rule_id"/>
+                <field name="partner_id" optional="show"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista FORM para hr.recurring.item.type -->
+    <record id="view_hr_recurring_item_type_form" model="ir.ui.view">
+        <field name="name">hr.recurring.item.type.form</field>
+        <field name="model">hr.recurring.item.type</field>
+        <field name="arch" type="xml">
+            <form string="Tipo de Ítem Recurrente">
+                <sheet>
+                    <div class="oe_title">
+                        <label for="name" class="oe_edit_only"/>
+                        <h1><field name="name" placeholder="Ej. Libranza Banco X"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="code" required="1"/>
+                            <field name="item_type" required="1"/>
+                            <field name="salary_rule_id" required="1"
+                                   options="{'no_create': True, 'no_open': True}"
+                                   context="{'default_item_type': item_type}"/>
+                            <field name="partner_id" invisible="item_type == 'earn'"/>
+                        </group>
+                        <group>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                            <field name="rule_category_code" readonly="1"/>
+                            <field name="rule_type_concept" readonly="1"/>
+                            <field name="rule_earn_category" invisible="item_type == 'deduction'" />
+                            <field name="rule_deduction_category" invisible="item_type == 'earn'"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notas Internas">
+                            <field name="notes" placeholder="Añade notas o descripciones adicionales aquí..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para hr.recurring.item.type -->
+    <record id="action_hr_recurring_item_type" model="ir.actions.act_window">
+        <field name="name">Tipos de Conceptos Recurrente</field>
+        <field name="res_model">hr.recurring.item.type</field>
+        <field name="view_mode">list,form</field> <!-- Cambiado 'tree' a 'list' -->
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea un nuevo tipo de ítem recurrente (devengo o deducción).
+            </p><p>
+                Define plantillas para conceptos como libranzas, bonos fijos, auxilios, etc.,
+                y vincúlalos a la regla salarial correspondiente.
+            </p>
+        </field>
+    </record>
+
+    <!-- Vista TREE (ahora LIST) para hr.employee.recurring.item -->
+    <record id="view_hr_employee_recurring_item_tree" model="ir.ui.view">
+        <field name="name">hr.employee.recurring.item.list</field> <!-- Renombrado para consistencia -->
+        <field name="model">hr.employee.recurring.item</field>
+        <field name="type">list</field>
+        <field name="arch" type="xml">
+            <list string="Recurrente por Empleado"> <!-- Cambiado de <tree> a <list> -->
+                <field name="sequence" widget="handle"/>
+                <field name="employee_id" required="1"/>
+                <field name="contract_id" required="1" domain="[('employee_id', '=', employee_id)]"/>
+                <field name="recurring_item_type_id" required="1"/>
+                <field name="item_type" readonly="1"/>
+                <field name="amount_type" required="1"/>
+                <field name="amount" required="amount_type == 'fix'"/>
+                <field name="percentage" required="amount_type == 'percentage'" invisible="amount_type == 'fix'"/>
+                <field name="percentage_base_rule_code" invisible="amount_type == 'fix'"/>
+                <field name="date_start" required="1"/>
+                <field name="date_end"/>
+                <field name="use_installments" optional="hide"/>
+                <field name="number_of_installments" optional="hide" invisible="not use_installments" required="use_installments"/>
+                <field name="current_installment" optional="show" readonly="1"/>
+                <field name="remaining_installments" optional="show" readonly="1"/>
+                <field name="remaining_balance" optional="show" readonly="1"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista FORM para hr.employee.recurring.item -->
+    <record id="view_hr_employee_recurring_item_form" model="ir.ui.view">
+        <field name="name">hr.employee.recurring.item.form</field>
+        <field name="model">hr.employee.recurring.item</field>
+        <field name="arch" type="xml">
+            <form string="Ítem Recurrente de Empleado">
+                <sheet>
+                    <group>
+                        <group>
+                            <field name="employee_id" required="1"/>
+                            <field name="contract_id" required="1" domain="[('employee_id', '=', employee_id)]"
+                                   context="{'default_employee_id': employee_id}"/>
+                            <field name="recurring_item_type_id" required="1" options="{'no_create': True, 'no_open': True}"/>
+                            <field name="item_type" readonly="1"/>
+                            <field name="salary_rule_code" readonly="1"/>
+                            <field name="partner_id" readonly="1"/>
+                        </group>
+                        <group>
+                            <field name="amount_type" required="1" widget="radio" options="{'horizontal': True}"/>
+                            <field name="amount" required="amount_type == 'fix'"/>
+                            <field name="percentage" required="amount_type == 'percentage'" invisible="amount_type == 'fix'"/>
+                            <field name="percentage_base_rule_code"/> <!-- Eliminado invisible="amount_type == 'fix'" -->
+                            <field name="currency_id" invisible="1"/>
+                            <field name="active"/>
+                            <field name="sequence"/>
+                        </group>
+                    </group>
+                    <group string="Duración y Control">
+                        <group>
+                            <field name="date_start" required="1"/>
+                            <field name="date_end"/>
+                        </group>
+                        <group>
+                            <field name="use_installments"/>
+                            <field name="number_of_installments" invisible="not use_installments" required="use_installments"/>
+                            <field name="initial_installment" invisible="not use_installments"/>
+                            <field name="current_installment" readonly="1" invisible="not use_installments"/>
+                            <field name="remaining_installments" readonly="1" invisible="not use_installments"/>
+                            <field name="total_amount" invisible="not use_installments" required="use_installments"/>
+                            <field name="paid_amount" readonly="1" invisible="not use_installments"/>
+                            <field name="remaining_balance" readonly="1" invisible="not use_installments"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Notas Internas">
+                            <field name="notes" placeholder="Añade notas o descripciones adicionales aquí..."/>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción para hr.employee.recurring.item -->
+    <record id="action_hr_employee_recurring_item" model="ir.actions.act_window">
+        <field name="name">Recurrente por Empleado</field>
+        <field name="res_model">hr.employee.recurring.item</field>
+        <field name="view_mode">list,form</field> <!-- Cambiado 'tree' a 'list' -->
+        <field name="context">{'search_default_active': 1}</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Configura un nuevo ítem recurrente para un empleado.
+            </p><p>
+                Define pagos o deducciones periódicas como libranzas, bonos fijos, auxilios, etc.,
+                especificando montos, porcentajes, fechas y control de cuotas si aplica.
+            </p>
+        </field>
+    </record>
+
+    <!-- Menús -->
+    <menuitem
+        id="menu_hr_payroll_recurring_items_config"
+        name="Conceptos Recurrentes"
+        parent="hr.menu_hr_root"
+        groups="hr_payroll.group_hr_payroll_manager"
+        sequence="90"/>
+
+    <menuitem
+        id="menu_hr_recurring_item_type"
+        name="Tipos de Conceptos Recurrente"
+        parent="menu_hr_payroll_recurring_items_config"
+        action="action_hr_recurring_item_type"
+        sequence="10"/>
+
+    <menuitem
+        id="menu_hr_employee_recurring_item"
+        name="Recurrentes por Empleado"
+        parent="menu_hr_payroll_recurring_items_config"
+        action="action_hr_employee_recurring_item"
+        sequence="20"/>
+
+</odoo>

@@ -1,0 +1,112 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_payslip_view_form_l10n_co_hr_payroll" model="ir.ui.view">
+        <field name="name">hr.payslip.form.l10n.co.payroll.inherit</field>
+        <field name="model">hr.payslip</field>
+        <field name="priority">20</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+
+            <xpath expr="//header/button[@name='action_payslip_done']" position="after">
+                <button name="validate_dian"
+                        string="Validar DIAN"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="state not in ('done', 'paid') or edi_is_valid == True"
+                        help="Envía esta nómina individual a la DIAN a través de la API."/>
+                <button name="get_dian_status"
+                        string="Consultar Estado DIAN"
+                        type="object"
+                        invisible="edi_zip_key == False or edi_is_valid == True"
+                        help="Consulta el estado de una nómina enviada de forma asíncrona."/>
+                <button name="action_print_payslip_account_move"
+                        string="Imprimir Recibo Contable"
+                        type="object"
+                        class="oe_highlight"
+                        invisible="not move_id"/>
+            </xpath>
+
+            <xpath expr="//div[@name='button_box']" position="inside">
+                 <button name="l10n_co_edi_xml_file_download"
+                         string="Descargar XML DIAN"
+                         type="object"
+                         icon="fa-download"
+                         invisible="l10n_co_edi_xml_file == False"/>
+                 <button name="l10n_co_edi_pdf_file_download"
+                         string="Descargar PDF DIAN"
+                         type="object"
+                         icon="fa-download"
+                         invisible="l10n_co_edi_pdf_file == False"/>
+            </xpath>
+
+            <xpath expr="//notebook" position="inside">
+                <page name="electronic_payroll_info" string="Nómina Electrónica DIAN">
+                    <group>
+                        <group string="Estado DIAN">
+                            <field name="edi_state" readonly="1" force_save="1"/>
+                            <field name="edi_is_valid" readonly="1" force_save="1"/>
+                            <field name="l10n_co_edi_cune" readonly="1" force_save="1"/>
+                            <field name="edi_zip_key" readonly="1" force_save="1"/>
+                        </group>
+                        <group string="Respuesta DIAN">
+                            <field name="edi_status_message" readonly="1" force_save="1"
+                                   invisible="edi_state not in ('rejected', 'error')"/>
+                            <field name="edi_errors_messages" readonly="1" force_save="1"
+                                   invisible="edi_state not in ('rejected', 'error')"/>
+                            <field name="l10n_co_edi_qr_code_url" widget="url" text="Ver en portal DIAN" readonly="1" force_save="1"/>
+                        </group>
+                    </group>
+                    <group string="Payload API (Solo para Depuración)" groups="base.group_no_one">
+                        <field name="edi_payload" readonly="1"/>
+                    </group>
+                </page>
+            </xpath>
+
+            <xpath expr="//field[@name='contract_id']" position="before">
+                <field name="payment_date" readonly="state != 'draft'"/>
+                <field name="payment_method_id" readonly="state != 'draft'"/>
+            </xpath>
+
+            <xpath expr="//field[@name='line_ids']" position="after">
+                <group class="oe_subtotal_footer oe_right">
+                    <field name="accrued_total_amount" widget="monetary" readonly="True"/>
+                    <field name="deductions_total_amount" widget="monetary" readonly="True"/>
+                    <field name="total_amount" widget="monetary" readonly="True" class="oe_subtotal_footer_separator"/>
+                    <field name="others_total_amount" widget="monetary" readonly="True" invisible="1"/>
+                    <field name="currency_id" invisible="1"/>
+                    <field name="worked_days_total" readonly="True"/>
+                </group>
+                <div class="clearfix"/>
+            </xpath>
+
+            <xpath expr="//field[@name='input_line_ids']" position="after">
+                <separator string="Detalle Devengos"/>
+                <field name="earn_ids" readonly="state != 'draft'"/>
+                <separator string="Detalle Deducciones"/>
+                <field name="deduction_ids" readonly="state != 'draft'"/>
+            </xpath>
+            
+            <xpath expr="//field[@name='credit_note']" position="after">
+                <field name="origin_payslip_id" invisible="not credit_note" readonly="state != 'draft'"/>
+                <field name="is_settlement" readonly="state != 'draft'"/>
+            </xpath>   
+        </field>
+    </record>
+
+    <record id="hr_payslip_tree_l10n_co_payroll" model="ir.ui.view">
+        <field name="name">hr.payslip.tree.l10n.co.payroll</field>
+        <field name="model">hr.payslip</field>
+        <field name="priority">20</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_tree"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='state']" position="before">
+                <field name="worked_days_total"/>
+                <field name="accrued_total_amount"/>
+                <field name="deductions_total_amount"/>
+                <field name="total_amount"/>
+                <field name="edi_state" widget="badge" decoration-success="edi_state == 'accepted'" decoration-danger="edi_state in ('rejected', 'error')" decoration-warning="edi_state == 'sent'"/>
+            </xpath>
+        </field>
+    </record>
+
+    </odoo>

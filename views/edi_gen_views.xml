@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--inencon S.A.S. - Copyright (C) (2024)-->
+
+<!--This file is part of l10n_co_hr_payroll_enterprise.-->
+
+<!--This program is free software: you can redistribute it and/or modify-->
+<!--it under the terms of the GNU Lesser General Public License as published by-->
+<!--the Free Software Foundation, either version 3 of the License, or-->
+<!--(at your option) any later version.-->
+
+<!--This program is distributed in the hope that it will be useful,-->
+<!--but WITHOUT ANY WARRANTY; without even the implied warranty of-->
+<!--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the-->
+<!--GNU Lesser General Public License for more details.-->
+
+<!--You should have received a copy of the GNU Lesser General Public License-->
+<!--along with this program. If not, see <https://www.gnu.org/licenses/>.-->
+
+<!--email: info@inencon.com-->
+
+<odoo>
+    <record id="action_view_hr_payslip_edi_generate" model="ir.actions.act_window">
+        <field name="name">Generar Nóminas Electrónicas</field>
+        <!-- Asegúrate de que el modelo 'l10n_co_hr_payroll.edi_gen' exista en tu módulo o cambia el nombre -->
+        <field name="res_model">l10n_co_hr_payroll.edi_gen</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+    </record>
+
+    <record id="edi_gen_wizard_form" model="ir.ui.view">
+        <field name="name">l10n_co_hr_payroll.edi_gen.form</field>
+        <field name="model">l10n_co_hr_payroll.edi_gen</field>
+        <field name="arch" type="xml">
+            <form string="Generar Nóminas Electrónicas">
+                <group name="main">
+                    <field name="month"/>
+                    <field name="year"/>
+                    <field name="payroll_type" string="Tipo de Nómina"/>
+                </group>
+                <footer>
+                    <button name="generate" type="object"
+                            string="Generar" class="oe_highlight"/>
+                    <button special="cancel" string="Cancelar"/>
+             </footer>
+        </form>
+        </field>
+    </record>
+
+    <menuitem action="action_view_hr_payslip_edi_generate"
+              id="menu_payslip_edi_generate_wizard"
+              name="Generar Nomina Electronica"
+              parent="l10n_co_nomina.menu_hr_payroll_edi_payslips_root"
+              groups="hr_payroll.group_hr_payroll_user"/>
+              <!-- Comentario movido fuera de la etiqueta -->
+              <!-- Nombre cambiado -->
+
+</odoo>

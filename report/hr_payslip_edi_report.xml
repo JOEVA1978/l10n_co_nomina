@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--inencon S.A.S. - Copyright (C) (2024)-->
+
+<!--This program is free software: you can redistribute it and/or modify-->
+<!--it under the terms of the GNU Lesser General Public License as published by-->
+<!--the Free Software Foundation, either version 3 of the License, or-->
+<!--(at your option) any later version.-->
+
+<!--This program is distributed in the hope that it will be useful,-->
+<!--but WITHOUT ANY WARRANTY; without even the implied warranty of-->
+<!--MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE.  See the-->
+<!--GNU Lesser General Public License for more details.-->
+
+<!--You should have received a copy of the GNU Lesser General Public License-->
+<!--along with this program. If not, see <https://www.gnu.org/licenses/>.-->
+
+<!--email: info@inencon.com-->
+
+<odoo>
+    <record id="action_hr_payslip_co_report" model="ir.actions.report">
+        <!-- CORREGIDO: Nombre más descriptivo -->
+        <field name="name">Recibo de Nómina (PDF)</field>
+        <field name="model">hr.payslip</field>
+        <field name="report_type">qweb-pdf</field>
+        <!-- CORREGIDO: Referencia al módulo actual -->
+        <field name="report_name">l10n_co_nomina.report_hr_payslip_co_template_translated</field>
+        <!-- CORREGIDO: Referencia al módulo actual -->
+        <field name="report_file">l10n_co_nomina.report_hr_payslip_co_template_translated</field>
+        <field name="print_report_name">(object.name)</field>
+        <!-- CORREGIDO: Usar estado 'done' en lugar de 'posted' -->
+        <field name="attachment">(object.state == 'done') and ((object.name or 'SLIP').replace('/','_')+'.pdf')</field>
+        <field name="binding_model_id" ref="model_hr_payslip"/>
+        <field name="binding_type">report</field>
+        <field name="groups_id" eval="[(4, ref('hr_payroll.group_hr_payroll_user'))]"/>
+    </record>
+
+    <record id="action_hr_payslip_edi_co_report" model="ir.actions.report">
+         <!-- CORREGIDO: Nombre más descriptivo -->
+        <field name="name">Nómina Consolidada (PDF)</field>
+        <field name="model">hr.payslip.edi</field>
+        <field name="report_type">qweb-pdf</field>
+         <!-- CORREGIDO: Referencia al módulo actual -->
+        <field name="report_name">l10n_co_nomina.report_hr_payslip_edi_co_template_translated</field>
+         <!-- CORREGIDO: Referencia al módulo actual -->
+        <field name="report_file">l10n_co_nomina.report_hr_payslip_edi_co_template_translated</field>
+        <field name="print_report_name">(object.name)</field>
+         <!-- CORREGIDO: Usar estado 'done' en lugar de 'posted' -->
+        <field name="attachment">(object.state == 'done') and ((object.name or 'SLIP').replace('/','_')+'.pdf')</field>
+        <field name="binding_model_id" ref="model_hr_payslip_edi"/>
+        <field name="binding_type">report</field>
+        <field name="groups_id" eval="[(4, ref('hr_payroll.group_hr_payroll_user'))]"/>
+    </record>
+
+    <template id="report_hr_payslip_co_template_translated">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                <!-- CORREGIDO: Usar el lang del partner asociado al empleado o compañía -->
+                <t t-set="lang" t-value="o.employee_id.sudo().address_home_id.lang or o.company_id.partner_id.lang or 'es_CO'"/>
+                 <!-- CORREGIDO: Referencia al módulo actual -->
+                <t t-call="l10n_co_nomina.report_hr_payslip_co_template" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_hr_payslip_edi_co_template_translated">
+        <t t-call="web.html_container">
+            <t t-foreach="docs" t-as="o">
+                 <!-- CORREGIDO: Usar el lang del partner asociado al empleado o compañía -->
+                <t t-set="lang" t-value="o.employee_id.sudo().address_home_id.lang or o.company_id.partner_id.lang or 'es_CO'"/>
+                 <!-- CORREGIDO: Referencia al módulo actual -->
+                <t t-call="l10n_co_nomina.report_hr_payslip_edi_co_template" t-lang="lang"/>
+            </t>
+        </t>
+    </template>
+
+    <!-- Nota: Las plantillas report_hr_payslip_co_template y report_hr_payslip_edi_co_template -->
+    <!-- muestran principalmente el edi_payload_html. Si se desea un formato de recibo de nómina -->
+    <!-- más tradicional, estas plantillas necesitarían ser rediseñadas para mostrar -->
+    <!-- las líneas de salario (o.line_ids), días trabajados (o.worked_days_line_ids), etc. -->
+    <!-- Por ahora, se mantienen como están, solo asegurando que los campos referenciados existan. -->
+
+    <template id="report_hr_payslip_co_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="container">
+                            <div class="row mt32 mb32">
+                                <div t-if="o.edi_qr_data" class="col-auto mw-100 mb-2">
+                                    <!-- With Odoo-->
+                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.edi_qr_data, 192, 192)"/>
+                                </div>
+                                <div class="col-auto mw-100 mb-2">
+                                    <div>
+                                        <strong>Recibo Electrónico:</strong> <!-- Texto ajustado -->
+                                        <span t-field="o.number"/>
+                                    </div>
+                                    <div>
+                                        <span t-field="o.employee_id.name"/>
+                                        <span t-field="o.employee_id.private_street"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div t-if="o.edi_uuid">
+                                <strong>CUNE:</strong>
+                                <small>
+                                    <span t-field="o.edi_uuid"/>
+                                </small>
+                            </div>
+                            <br/>
+                            <br/>
+                            <h2>
+                                <span t-field="o.name"/>
+                            </h2>
+                            <br/>
+                            <!-- Este div muestra el payload HTML, no un desglose detallado del recibo -->
+                            <div t-field="o.edi_payload_html" t-options='{"widget": "html"}'/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+    <template id="report_hr_payslip_edi_co_template">
+        <t t-call="web.html_container">
+            <t t-call="web.external_layout">
+                <t t-foreach="docs" t-as="o">
+                    <div class="page">
+                        <div class="container">
+                            <div class="row mt32 mb32">
+                                <div t-if="o.edi_qr_data" class="col-auto mw-100 mb-2">
+                                    <!-- With Odoo-->
+                                    <img t-att-src="'/report/barcode/?type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', o.edi_qr_data, 192, 192)"/>
+                                </div>
+                                <div class="col-auto mw-100 mb-2">
+                                    <div>
+                                         <strong>Nómina Consolidada:</strong> <!-- Texto ajustado -->
+                                        <span t-field="o.number"/>
+                                    </div>
+                                    <div>
+                                        <span t-field="o.employee_id.name"/>
+                                        <span t-field="o.employee_id.private_street"/>
+                                    </div>
+                                </div>
+                            </div>
+                            <div t-if="o.edi_uuid">
+                                <strong>CUNE:</strong>
+                                <small>
+                                    <span t-field="o.edi_uuid"/>
+                                </small>
+                            </div>
+                            <br/>
+                            <br/>
+                            <h2>
+                                <span t-field="o.name"/>
+                            </h2>
+                            <br/>
+                             <!-- Este div muestra el payload HTML, no un desglose detallado del recibo -->
+                            <div t-field="o.edi_payload_html" t-options='{"widget": "html"}'/>
+                        </div>
+                    </div>
+                </t>
+            </t>
+        </t>
+    </template>
+
+</odoo>

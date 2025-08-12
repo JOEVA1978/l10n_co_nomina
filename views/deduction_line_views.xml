@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_deduction_line_tree" model="ir.ui.view">
+        <field name="name">l10n_co_hr_payroll.deduction.line.tree</field>
+        <field name="model">l10n_co_hr_payroll.deduction.line</field>
+        <field name="type">list</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <list string="Deduction Details" editable="bottom">
+                <field name="rule_input_id" options="{'no_create': True, 'no_open': True}"/>
+                <field name="category" invisible="1"/>
+                <field name="code" invisible="1"/>
+                <field name="name"/>
+                <field name="amount"/>
+                <field name="sequence" invisible="True"/>
+            </list>
+        </field>
+    </record>
+</odoo>

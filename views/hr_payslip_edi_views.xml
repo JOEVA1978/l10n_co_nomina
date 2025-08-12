@@ -1,0 +1,170 @@
+<odoo>
+    <!-- Vista de Búsqueda para hr.payslip.edi -->
+    <record id="view_hr_payslip_edi_search" model="ir.ui.view">
+        <field name="name">hr.payslip.edi.search</field>
+        <field name="model">hr.payslip.edi</field>
+        <field name="arch" type="xml">
+            <search string="Buscar Nómina Electrónica">
+                <field name="name" string="Referencia"/>
+                <field name="employee_id"/>
+                <field name="l10n_co_edi_cune" string="CUNE"/>
+                <separator/>
+                <filter string="Borrador" name="state_draft" domain="[('state', '=', 'draft')]"/>
+                <filter string="Hecho" name="state_done" domain="[('state', '=', 'done')]"/>
+                <separator/>
+                <filter string="Por Enviar a DIAN" name="edi_state_to_send" domain="[('edi_state', '=', 'to_send')]"/>
+                <filter string="Aceptado por DIAN" name="edi_state_accepted" domain="[('edi_state', '=', 'accepted')]"/>
+                <filter string="Rechazado por DIAN" name="edi_state_rejected" domain="[('edi_state', '=', 'rejected')]"/>
+                <group expand="0" string="Agrupar por...">
+                    <filter string="Empleado" name="group_by_employee" context="{'group_by': 'employee_id'}"/>
+                    <filter string="Estado" name="group_by_state" context="{'group_by': 'state'}"/>
+                    <filter string="Estado EDI" name="group_by_edi_state" context="{'group_by': 'edi_state'}"/>
+                </group>
+            </search>
+        </field>
+    </record>
+
+    <!-- Vista de Lista (Tree) para hr.payslip.edi -->
+    <record id="view_hr_payslip_edi_list" model="ir.ui.view">
+        <field name="name">hr.payslip.edi.list</field>
+        <field name="model">hr.payslip.edi</field>
+        <field name="arch" type="xml">
+            <list string="Nómina Electrónica Consolidada"
+                  decoration-success="edi_state == 'accepted'"
+                  decoration-danger="edi_state == 'rejected' or edi_state == 'error'"
+                  decoration-warning="edi_state == 'sent'"
+                  decoration-muted="state == 'cancel'">
+                <field name="number"/>
+                <field name="name"/>
+                <field name="employee_id"/>
+                <field name="month"/>
+                <field name="year"/>
+                <field name="date"/>
+                <field name="edi_is_valid" string="Validado"/>
+                <field name="edi_state" widget="badge" decoration-success="edi_state == 'accepted'" decoration-danger="edi_state in ('rejected', 'error')" decoration-warning="edi_state == 'sent'"/>
+                <field name="state" widget="badge" decoration-success="state == 'done'" decoration-info="state == 'draft'"/>
+                <field name="company_id" groups="base.group_multi_company"/>
+            </list>
+        </field>
+    </record>
+
+    <!-- Vista de Formulario para hr.payslip.edi -->
+    <record id="view_hr_payslip_edi_form" model="ir.ui.view">
+        <field name="name">hr.payslip.edi.form</field>
+        <field name="model">hr.payslip.edi</field>
+        <field name="arch" type="xml">
+            <form string="Nómina Electrónica Consolidada">
+                <header>
+                    <!-- Botones de Acción -->
+                    <button string="Confirmar" name="action_payslip_done" type="object" class="oe_highlight" invisible="state != 'draft'"/>
+                    
+                    <!-- Botones de la API (Nombres y visibilidad corregidos) -->
+                    <button name="validate_dian" type="object" string="Validar DIAN" class="oe_highlight"
+                            invisible="state != 'done' or edi_is_valid == True"
+                            help="Envía esta nómina consolidada a la DIAN a través de la API."/>
+                    
+                    <button name="get_dian_status" type="object" string="Consultar Estado DIAN"
+                            invisible="edi_zip_key == False or edi_is_valid == True"
+                            help="Consulta el estado de una nómina enviada de forma asíncrona."/>
+
+                    <button string="Reembolsar" name="refund_sheet" type="object" invisible="state != 'done' or credit_note == True"/>
+                    <button string="Pasar a Borrador" name="action_payslip_draft" type="object" invisible="state != 'cancel'"/>
+                    <button string="Cancelar" name="action_payslip_cancel" type="object" invisible="state not in ('draft', 'done') or edi_is_valid == True"/>
+                    
+                    <field name="state" widget="statusbar" statusbar_visible="draft,done"/>
+                </header>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="dian_preview" type="object" class="oe_stat_button" icon="fa-globe"
+                                invisible="l10n_co_edi_cune == False"
+                                help="Ver la representación gráfica en el portal de la DIAN.">
+                            <div class="o_field_widget o_stat_info">
+                                <span class="o_stat_text">DIAN</span>
+                                <span class="o_stat_text">Web View</span>
+                            </div>
+                        </button>
+                        <button name="l10n_co_edi_xml_file_download" string="Descargar XML" type="object" icon="fa-download" invisible="l10n_co_edi_xml_file == False"/>
+                        <button name="l10n_co_edi_pdf_file_download" string="Descargar PDF" type="object" icon="fa-download" invisible="l10n_co_edi_pdf_file == False"/>
+                    </div>
+                    <div class="oe_title">
+                        <h1><field name="name" readonly="1"/></h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="employee_id" readonly="state != 'draft'"/>
+                            <field name="number" readonly="1"/>
+                            <field name="contract_id" readonly="state != 'draft'"/>
+                        </group>
+                        <group>
+                            <field name="date" readonly="state != 'draft'"/>
+                            <div class="o_row">
+                                <field name="month" readonly="state != 'draft'"/>
+                                <field name="year" readonly="state != 'draft'"/>
+                            </div>
+                            <field name="company_id" groups="base.group_multi_company"/>
+                            <field name="currency_id" invisible="1"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page string="Nóminas Individuales">
+                            <field name="payslip_ids" readonly="state != 'draft'"/>
+                        </page>
+                        
+                        <page name="dian_payroll_info" string="Información Nómina Electrónica DIAN">
+                            <group>
+                                <group string="Estado DIAN">
+                                    <field name="edi_state" readonly="1" force_save="1"/>
+                                    <field name="edi_is_valid" readonly="1" force_save="1"/>
+                                    <field name="l10n_co_edi_cune" readonly="1" force_save="1"/>
+                                    <field name="edi_zip_key" readonly="1" force_save="1"/>
+                                </group>
+                                <group string="Respuesta DIAN">
+                                    <field name="edi_status_message" readonly="1" force_save="1"
+                                           invisible="edi_state not in ('rejected', 'error')"/>
+                                    <field name="edi_errors_messages" readonly="1" force_save="1"
+                                           invisible="edi_state not in ('rejected', 'error')"/>
+                                </group>
+                            </group>
+                        </page>
+                        
+                        <page string="Otra Información">
+                            <group>
+                                <field name="note" readonly="state != 'draft'"/>
+                            </group>
+                        </page>
+                    </notebook>
+                </sheet>
+                <div class="oe_chatter">
+                    <field name="message_follower_ids"/>
+                    <field name="activity_ids"/>
+                    <field name="message_ids"/>
+                </div>
+            </form>
+        </field>
+    </record>
+
+    <!-- Acción de Menú -->
+    <record id="action_hr_payslip_edi" model="ir.actions.act_window">
+        <field name="name">Nómina Electrónica Consolidada</field>
+        <field name="res_model">hr.payslip.edi</field>
+        <field name="view_mode">tree,form</field>
+        <field name="search_view_id" ref="view_hr_payslip_edi_search"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Crea la primera Nómina Electrónica Consolidada
+            </p>
+        </field>
+    </record>
+
+    <!-- Menú -->
+    <menuitem id="menu_hr_payroll_edi_payslips_root"
+              name="Nómina Electrónica CO"
+              parent="hr_payroll.menu_hr_payroll_payslips"
+              sequence="90"/>
+    <menuitem id="menu_hr_payslip_edi"
+              name="Nómina Consolidada"
+              parent="l10n_co_nomina.menu_hr_payroll_edi_payslips_root"
+              action="action_hr_payslip_edi"
+              sequence="10"/>
+
+</odoo>

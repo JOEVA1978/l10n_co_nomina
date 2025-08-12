@@ -1,0 +1,154 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">  <!-- noupdate="1" evita que los datos se sobrescriban en actualizaciones -->
+
+        <!-- Tipos de Trabajador (Modelo: l10n_co_nomina.worker.type) -->
+        <!-- Datos tomados de l10n_co_nomina_worker_type_data.xml -->
+        <record id="worker_type_1" model="l10n_co_nomina.worker.type">
+            <field name="name">Dependiente</field>
+            <field name="code">1</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_2" model="l10n_co_nomina.worker.type">
+            <field name="name">Servicio domestico</field>
+            <field name="code">2</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_3" model="l10n_co_nomina.worker.type">
+            <field name="name">Madre comunitaria</field>
+            <field name="code">4</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_4" model="l10n_co_nomina.worker.type">
+            <field name="name">Aprendices del Sena en etapa lectiva</field>
+            <field name="code">12</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_5" model="l10n_co_nomina.worker.type">
+            <field name="name">Funcionarios públicos sin tope máximo de ibc</field>
+            <field name="code">18</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_6" model="l10n_co_nomina.worker.type">
+            <field name="name">Aprendices del SENA en etapa productiva</field>
+            <field name="code">19</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_7" model="l10n_co_nomina.worker.type">
+            <field name="name">Estudiantes de postgrado en salud</field>
+            <field name="code">21</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_8" model="l10n_co_nomina.worker.type">
+            <field name="name">Profesor de establecimiento particular</field>
+            <field name="code">22</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_9" model="l10n_co_nomina.worker.type">
+            <field name="name">Estudiantes aportes solo riesgos laborales</field>
+            <field name="code">23</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_10" model="l10n_co_nomina.worker.type">
+            <field name="name">Dependiente entidades o universidades públicas con régimen especial en salud</field>
+            <field name="code">30</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_11" model="l10n_co_nomina.worker.type">
+            <field name="name">Cooperados o pre cooperativas de trabajo asociado</field>
+            <field name="code">31</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_12" model="l10n_co_nomina.worker.type">
+            <field name="name">Trabajador dependiente de entidad beneficiaria del sistema general de participaciones - aportes patronales</field>
+            <field name="code">47</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_13" model="l10n_co_nomina.worker.type">
+            <field name="name">Trabajador de tiempo parcial</field>
+            <field name="code">51</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_14" model="l10n_co_nomina.worker.type">
+            <field name="name">Pre pensionado de entidad en liquidación.</field>
+            <field name="code">54</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_15" model="l10n_co_nomina.worker.type">
+            <field name="name">Pre pensionado con aporte voluntario a salud</field>
+            <field name="code">56</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="worker_type_16" model="l10n_co_nomina.worker.type">
+            <field name="name">Estudiantes de prácticas laborales en el sector público</field>
+            <field name="code">58</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+        <!-- Subtipos de Trabajador (Modelo: l10n_co_nomina.subtype.worker) -->
+        <!-- Datos tomados de l10n_co_nomina_subtype_worker_data.xml -->
+        <record id="subtype_worker_0" model="l10n_co_nomina.subtype.worker">
+            <field name="name">No Aplica</field>
+            <field name="code">0</field> <!-- Código DIAN -->
+            <!-- <field name="country_id" ref="base.co"/> --> <!-- Campo eliminado -->
+        </record>
+        <record id="subtype_worker_1" model="l10n_co_nomina.subtype.worker">
+            <field name="name">Dependiente pensionado por vejez activo</field>
+            <field name="code">1</field> <!-- Código DIAN -->
+            <!-- <field name="country_id" ref="base.co"/> --> <!-- Campo eliminado -->
+        </record>
+        <!-- Añadir otros subtipos si son necesarios -->
+
+        <!-- Tipos de Contrato (Modelo: l10n_co_nomina.contract.type) -->
+        <!-- Datos tomados de l10n_co_nomina_contract_type_data.xml -->
+        <record id="contract_type_1" model="l10n_co_nomina.contract.type">
+            <field name="name">Termino Fijo</field>
+            <field name="code">1</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="contract_type_2" model="l10n_co_nomina.contract.type">
+            <field name="name">Término Indefinido</field>
+            <field name="code">2</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="contract_type_3" model="l10n_co_nomina.contract.type">
+            <field name="name">Obra o Labor</field>
+            <field name="code">3</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="contract_type_4" model="l10n_co_nomina.contract.type">
+            <field name="name">Aprendizaje</field>
+            <field name="code">4</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <record id="contract_type_5" model="l10n_co_nomina.contract.type">
+            <field name="name">Prácticas o Pasantías</field>
+            <field name="code">5</field> <!-- Código DIAN -->
+            <field name="country_id" ref="base.co"/>
+        </record>
+        <!-- Añadir otros tipos de contrato si son necesarios -->
+
+        <!-- Periodos de Nómina (Modelo: l10n_co_nomina.payroll.period) -->
+        <!-- Datos originales de hr_payroll_catalogues_data.xml -->
+        <record id="payroll_period_1" model="l10n_co_nomina.payroll.period">
+            <field name="name">Semanal</field>
+            <field name="code">1</field> <!-- Código DIAN -->
+        </record>
+        <record id="payroll_period_3" model="l10n_co_nomina.payroll.period">
+            <field name="name">Catorcenal</field>
+            <field name="code">3</field> <!-- Código DIAN -->
+        </record>
+        <record id="payroll_period_4" model="l10n_co_nomina.payroll.period">
+            <field name="name">Quincenal</field>
+            <field name="code">4</field> <!-- Código DIAN -->
+        </record>
+        <record id="payroll_period_5" model="l10n_co_nomina.payroll.period">
+            <field name="name">Mensual</field>
+            <field name="code">5</field> <!-- Código DIAN -->
+        </record>
+        <record id="payroll_period_6" model="l10n_co_nomina.payroll.period">
+            <field name="name">Otro</field>
+            <field name="code">6</field> <!-- Código DIAN -->
+        </record>
+    </data>
+</odoo>

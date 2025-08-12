@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <!-- Niveles de Riesgo ARL para Colombia -->
+        <record id="arl_risk_level_1" model="l10n_co_nomina.arl.risk.level">
+            <field name="sequence">10</field>
+            <field name="code">clase_i</field>
+            <field name="name">Riesgo mínimo. Incluye actividades de oficina o administrativas.</field>
+            <!-- Asumiendo que el porcentaje es 0.522% -->
+            <field name="percentage">0.522</field>
+            <field name="active" eval="True"/>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+        <record id="arl_risk_level_2" model="l10n_co_nomina.arl.risk.level">
+            <field name="sequence">10</field> <!-- Puedes ajustar secuencia si quieres orden diferente -->
+            <field name="code">clase_ii</field>
+            <field name="name">Riesgo bajo. Abarca actividades fabricantes o de almacenamiento que no implican exposición a riesgos altos.</field>
+            <!-- Asumiendo que el porcentaje es 1.044% -->
+            <field name="percentage">1.044</field>
+            <field name="active" eval="True"/>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+        <record id="arl_risk_level_3" model="l10n_co_nomina.arl.risk.level">
+            <field name="sequence">10</field>
+            <field name="code">clase_iii</field>
+            <field name="name">Riesgo medio. Comprende actividades manufactureras con manipulación de sustancias peligrosas, construcción (sin trabajos en altura), o trabajos agrícolas.</field>
+            <!-- Asumiendo que el porcentaje es 2.436% -->
+            <field name="percentage">2.436</field>
+            <field name="active" eval="True"/>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+        <record id="arl_risk_level_4" model="l10n_co_nomina.arl.risk.level">
+            <field name="sequence">10</field>
+            <field name="code">clase_iv</field>
+            <field name="name">Riesgo alto. Involucra actividades de construcción (con trabajos en altura), manejo de explosivos, minería a cielo abierto, o exposición constante a agentes patógenos.</field>
+            <!-- Asumiendo que el porcentaje es 4.350% -->
+            <field name="percentage">4.350</field>
+            <field name="active" eval="True"/>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+        <record id="arl_risk_level_5" model="l10n_co_nomina.arl.risk.level">
+            <field name="sequence">10</field>
+            <field name="code">clase_v</field>
+            <field name="name">Riesgo máximo. Incluye actividades de alto riesgo como minería subterránea, manejo de asbesto, bomberos, o exposición a radiaciones ionizantes.</field>
+            <!-- Asumiendo que el porcentaje es 6.960% -->
+            <field name="percentage">6.960</field>
+            <field name="active" eval="True"/>
+            <field name="country_id" ref="base.co"/>
+        </record>
+
+    </data>
+</odoo>

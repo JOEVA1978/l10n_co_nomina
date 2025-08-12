@@ -1,0 +1,218 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <!-- Vistas List/Form para los nuevos modelos (Usando <list>) -->
+
+    <!-- Worker Type -->
+    <record id="l10n_co_nomina_worker_type_view_list" model="ir.ui.view">
+        <field name="name">l10n_co_nomina.worker.type.list</field>
+        <field name="model">l10n_co_nomina.worker.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="country_id" options="{'no_create': True}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="l10n_co_nomina_worker_type_action" model="ir.actions.act_window">
+        <field name="name">Tipos de Trabajador (NE)</field>
+        <field name="res_model">l10n_co_nomina.worker.type</field>
+        <field name="view_mode">list,form</field> <!-- 'tree' es obsoleto para list, usar 'list' -->
+    </record>
+
+    <!-- Subtype Worker -->
+    <record id="l10n_co_nomina_subtype_worker_view_list" model="ir.ui.view">
+        <field name="name">l10n_co_nomina.subtype.worker.list</field>
+        <field name="model">l10n_co_nomina.subtype.worker</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="country_id" options="{'no_create': True}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+     <record id="l10n_co_nomina_subtype_worker_action" model="ir.actions.act_window">
+        <field name="name">Subtipos de Trabajador (NE)</field>
+        <field name="res_model">l10n_co_nomina.subtype.worker</field>
+        <field name="view_mode">list,form</field> <!-- 'tree' es obsoleto para list, usar 'list' -->
+    </record>
+
+    <!-- Contract Type -->
+    <record id="l10n_co_nomina_contract_type_view_list" model="ir.ui.view">
+        <field name="name">l10n_co_nomina.contract.type.list</field>
+        <field name="model">l10n_co_nomina.contract.type</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="country_id" options="{'no_create': True}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="l10n_co_nomina_contract_type_action" model="ir.actions.act_window">
+        <field name="name">Tipos de Contrato (NE)</field>
+        <field name="res_model">l10n_co_nomina.contract.type</field>
+        <field name="view_mode">list,form</field> <!-- 'tree' es obsoleto para list, usar 'list' -->
+    </record>
+
+    <!-- ARL Risk Level -->
+    <record id="l10n_co_nomina_arl_risk_level_view_list" model="ir.ui.view">
+        <field name="name">l10n_co_nomina.arl.risk.level.list</field>
+        <field name="model">l10n_co_nomina.arl.risk.level</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="name"/>
+                <field name="code"/>
+                <field name="country_id" options="{'no_create': True}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+     <record id="l10n_co_nomina_arl_risk_level_action" model="ir.actions.act_window">
+        <field name="name">Niveles de Riesgo ARL</field>
+        <field name="res_model">l10n_co_nomina.arl.risk.level</field>
+        <field name="view_mode">list,form</field> <!-- 'tree' es obsoleto para list, usar 'list' -->
+    </record>
+
+    <!-- CCF -->
+    <record id="l10n_co_nomina_ccf_view_list" model="ir.ui.view">
+        <field name="name">l10n_co_nomina.ccf.list</field>
+        <field name="model">l10n_co_nomina.ccf</field>
+        <field name="arch" type="xml">
+            <list>
+                <field name="sequence" widget="handle"/>
+                <field name="partner_id" widget="res_partner_many2one" context="{'search_default_is_company':1, 'show_vat': True}" options="{'no_create_edit': False}"/>
+                <field name="code"/>
+                <field name="country_id" options="{'no_create': True}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+     <record id="l10n_co_nomina_ccf_action" model="ir.actions.act_window">
+        <field name="name">Cajas de Compensación</field>
+        <field name="res_model">l10n_co_nomina.ccf</field>
+        <field name="view_mode">list,form</field> <!-- 'tree' es obsoleto para list, usar 'list' -->
+    </record>
+
+    <!-- EPS -->
+    <record id="l10n_co_nomina_eps_view_list" model="ir.ui.view">
+        <field name="name">l10n_co_nomina.eps.list</field>
+        <field name="model">l10n_co_nomina.eps</field>
+        <field name="arch" type="xml">
+             <list>
+                <field name="sequence" widget="handle"/>
+                <field name="partner_id" widget="res_partner_many2one" context="{'search_default_is_company':1, 'show_vat': True}" options="{'no_create_edit': False}"/>
+                <field name="code"/>
+                <field name="country_id" options="{'no_create': True}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="l10n_co_nomina_eps_action" model="ir.actions.act_window">
+        <field name="name">EPS</field>
+        <field name="res_model">l10n_co_nomina.eps</field>
+        <field name="view_mode">list,form</field> <!-- 'tree' es obsoleto para list, usar 'list' -->
+    </record>
+
+    <!-- Pension Fund -->
+    <record id="l10n_co_nomina_pension_fund_view_list" model="ir.ui.view">
+        <field name="name">l10n_co_nomina.pension.fund.list</field>
+        <field name="model">l10n_co_nomina.pension.fund</field>
+        <field name="arch" type="xml">
+             <list>
+                <field name="sequence" widget="handle"/>
+                <field name="partner_id" widget="res_partner_many2one" context="{'search_default_is_company':1, 'show_vat': True}" options="{'no_create_edit': False}"/>
+                <field name="code"/>
+                <field name="country_id" options="{'no_create': True}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+    <record id="l10n_co_nomina_pension_fund_action" model="ir.actions.act_window">
+        <field name="name">Fondos de Pensión</field>
+        <field name="res_model">l10n_co_nomina.pension.fund</field>
+        <field name="view_mode">list,form</field> <!-- 'tree' es obsoleto para list, usar 'list' -->
+    </record>
+
+    <!-- Cesantias Fund -->
+     <record id="l10n_co_nomina_cesantias_fund_view_list" model="ir.ui.view">
+        <field name="name">l10n_co_nomina.cesantias.fund.list</field>
+        <field name="model">l10n_co_nomina.cesantias.fund</field>
+        <field name="arch" type="xml">
+             <list>
+                <field name="sequence" widget="handle"/>
+                <field name="partner_id" widget="res_partner_many2one" context="{'search_default_is_company':1, 'show_vat': True}" options="{'no_create_edit': False}"/>
+                <field name="code"/>
+                <field name="country_id" options="{'no_create': True}"/>
+                <field name="active" widget="boolean_toggle"/>
+            </list>
+        </field>
+    </record>
+     <record id="l10n_co_nomina_cesantias_fund_action" model="ir.actions.act_window">
+        <field name="name">Fondos de Cesantías</field>
+        <field name="res_model">l10n_co_nomina.cesantias.fund</field>
+        <field name="view_mode">list,form</field> <!-- 'tree' es obsoleto para list, usar 'list' -->
+    </record>
+
+    <!-- Menús para Configuración (Ahora bajo Ajustes Generales) -->
+    <menuitem
+        id="menu_hr_payroll_l10n_co_nomina_config"
+        name="Configuración Nómina Electrónica CO"
+        parent="base.menu_administration"
+        sequence="100"
+        groups="hr_payroll.group_hr_payroll_manager"/>
+    <!-- CAMBIADO: El parent="base.menu_administration" apunta a Ajustes Generales -->
+    <!-- Puedes ajustar la secuencia '100' si quieres que aparezca más arriba o abajo en Ajustes -->
+
+    <!-- Los submenús ahora colgarán de este menú en Ajustes -->
+    <menuitem
+        id="menu_l10n_co_nomina_worker_type"
+        action="l10n_co_nomina_worker_type_action"
+        parent="menu_hr_payroll_l10n_co_nomina_config"
+        sequence="10"/>
+    <menuitem
+        id="menu_l10n_co_nomina_subtype_worker"
+        action="l10n_co_nomina_subtype_worker_action"
+        parent="menu_hr_payroll_l10n_co_nomina_config"
+        sequence="20"/>
+     <menuitem
+        id="menu_l10n_co_nomina_contract_type"
+        action="l10n_co_nomina_contract_type_action"
+        parent="menu_hr_payroll_l10n_co_nomina_config"
+        sequence="30"/>
+    <menuitem
+        id="menu_l10n_co_nomina_arl_risk_level"
+        action="l10n_co_nomina_arl_risk_level_action"
+        parent="menu_hr_payroll_l10n_co_nomina_config"
+        sequence="40"/>
+    <menuitem
+        id="menu_l10n_co_nomina_ccf"
+        action="l10n_co_nomina_ccf_action"
+        parent="menu_hr_payroll_l10n_co_nomina_config"
+        sequence="50"/>
+    <menuitem
+        id="menu_l10n_co_nomina_eps"
+        action="l10n_co_nomina_eps_action"
+        parent="menu_hr_payroll_l10n_co_nomina_config"
+        sequence="60"/>
+    <menuitem
+        id="menu_l10n_co_nomina_pension_fund"
+        action="l10n_co_nomina_pension_fund_action"
+        parent="menu_hr_payroll_l10n_co_nomina_config"
+        sequence="70"/>
+    <menuitem
+        id="menu_l10n_co_nomina_cesantias_fund"
+        action="l10n_co_nomina_cesantias_fund_action"
+        parent="menu_hr_payroll_l10n_co_nomina_config"
+        sequence="80"/>
+
+</odoo>

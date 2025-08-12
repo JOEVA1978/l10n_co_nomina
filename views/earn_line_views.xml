@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="view_earn_line_tree" model="ir.ui.view">
+        <field name="name">l10n_co_hr_payroll.earn.line.tree</field>
+        <field name="model">l10n_co_hr_payroll.earn.line</field>
+        <field name="type">list</field>
+        <field name="priority" eval="16"/>
+        <field name="arch" type="xml">
+            <list string="Earn Details" editable="bottom">
+                <field name="rule_input_id" options="{'no_create': True, 'no_open': True}"/>
+                <field name="category" invisible="1"/>
+                <field name="code" invisible="1"/>
+                <field name="name"/>
+                <field name="amount"
+                    invisible="category in ('suspension_or_unpaid_leaves','legal_strikes')"/>
+                <field name="quantity"
+                    readonly="category not in ('vacation_compensated','primas')"/>
+                <field name="total"
+                    invisible="category in ('suspension_or_unpaid_leaves','legal_strikes')"/>
+                <field name="sequence" invisible="True"/>
+                <field name="date_start"
+                    invisible="category not in ('vacation_common','licensings_maternity_or_paternity_leaves','licensings_permit_or_paid_licenses','licensings_suspension_or_unpaid_leaves','daily_overtime','overtime_night_hours','hours_night_surcharge','sunday_holiday_daily_overtime','daily_surcharge_hours_sundays_holidays','sunday_night_overtime_holidays','sunday_holidays_night_surcharge_hours','incapacities_common','incapacities_professional','incapacities_working','legal_strikes')"/>
+                <field name="time_start"
+                    invisible="category not in ('daily_overtime','overtime_night_hours','hours_night_surcharge','sunday_holiday_daily_overtime','daily_surcharge_hours_sundays_holidays','sunday_night_overtime_holidays','sunday_holidays_night_surcharge_hours')"
+                    widget="float_time"/>
+                <field name="date_end"
+                    invisible="category not in ('vacation_common','licensings_maternity_or_paternity_leaves','licensings_permit_or_paid_licenses','licensings_suspension_or_unpaid_leaves','daily_overtime','overtime_night_hours','hours_night_surcharge','sunday_holiday_daily_overtime','daily_surcharge_hours_sundays_holidays','sunday_night_overtime_holidays','sunday_holidays_night_surcharge_hours','incapacities_common','incapacities_professional','incapacities_working','legal_strikes')"/>
+                <field name="time_end"
+                    invisible="category not in ('daily_overtime','overtime_night_hours','hours_night_surcharge','sunday_holiday_daily_overtime','daily_surcharge_hours_sundays_holidays','sunday_night_overtime_holidays','sunday_holidays_night_surcharge_hours')"
+                    widget="float_time"/>
+            </list>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,542 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+    <template id="nomina_individual_xml_template" name="Plantilla XML Nomina Individual DIAN">
+        <NominaIndividual xmlns="dian:gov:co:facturaelectronica:NominaIndividual"
+                          xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+                          xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+                          xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+                          xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+                          xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"
+                          xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+                          xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+
+            <NumeroSecuenciaXML t-att-Numero="sequence.get('number')"
+                                t-att-Prefijo="sequence.get('prefix')"
+                                t-att-CodigoTrabajador="employee.get('worker_code', '')"/>
+            <LugarGeneracionXML t-att-Pais="employer.get('country_code', 'CO')"
+                                t-att-Departamento="employer.get('department_code')"
+                                t-att-Municipio="employer.get('municipality_code')"
+                                t-att-Idioma="employer.get('language_code', 'es')"/>
+            <ProveedorXML t-if="provider.get('nit')"
+                          t-att-NIT="provider.get('nit')"
+                          t-att-DV="provider.get('dv')"
+                          t-att-SoftwareID="provider.get('software_id')"
+                          t-att-SoftwareSC="provider.get('software_security_code')"/>
+            <QR/>
+            <InformacionGeneral t-att-Version="'V1.0: NominaIndividual'"
+                                t-att-Ambiente="environment.get('code', '2')"
+                                t-att-TipoXML="tip_xml"
+                                t-att-CUNE="cune"
+                                t-att-EncripCUNE="'CONTENIDO_ENCRIPCUNE'"
+                                t-att-FechaGen="period.get('date_issue')"
+                                t-att-HoraGen="period.get('time_issue')"
+                                t-att-PeriodoNomina="information.get('payroll_period_code')"
+                                t-att-TipoMoneda="information.get('currency_code_alpha', 'COP')"
+                                t-att-TRM="information.get('trm', '0.00')"/>
+            <Novedad t-if="novelty" t-att-Codigo="novelty.get('code')" t-esc="novelty.get('text')"/>
+            <Empleador t-att-RazonSocial="employer.get('name')"
+                       t-att-NIT="employer.get('id_number')"
+                       t-att-DV="employer.get('dv')"
+                       t-att-Pais="employer.get('country_code', 'CO')"
+                       t-att-Departamento="employer.get('department_code')"
+                       t-att-Municipio="employer.get('municipality_code')"
+                       t-att-Direccion="employer.get('address')"/>
+            <Trabajador t-att-TipoTrabajador="employee.get('type_worker_code')"
+                        t-att-SubTipoTrabajador="employee.get('subtype_worker_code')"
+                        t-att-AltoRiesgoPension="employee.get('high_risk_pension', 'false')"
+                        t-att-TipoDocumento="employee.get('id_code')"
+                        t-att-NumeroDocumento="employee.get('id_number')"
+                        t-att-PrimerApellido="employee.get('surname')"
+                        t-att-SegundoApellido="employee.get('second_surname', '')"
+                        t-att-PrimerNombre="employee.get('first_name')"
+                        t-att-OtrosNombres="employee.get('other_names', '')"
+                        t-att-LugarTrabajoPais="employee.get('country_code', 'CO')"
+                        t-att-LugarTrabajoDepartamento="employee.get('department_code')"
+                        t-att-LugarTrabajoMunicipio="employee.get('municipality_code')"
+                        t-att-LugarTrabajoDireccion="employee.get('address')"
+                        t-att-SalarioIntegral="employee.get('integral_salary', 'false')"
+                        t-att-TipoContrato="employee.get('contract_code')"
+                        t-att-Sueldo="employee.get('salary', '0.00')"
+                        t-att-CodigoTrabajador="employee.get('worker_code', '')"/>
+            <Pago t-att-Metodo="payment.get('method_code')"
+                  t-att-Banco="payment.get('bank', '')"
+                  t-att-TipoCuenta="payment.get('account_type', '')"
+                  t-att-NumeroCuenta="payment.get('account_number', '')"/>
+            <FechasPagos>
+                <FechaPago t-foreach="payment_dates" t-as="pay_date" t-att-FechaPago="pay_date.get('date')"/>
+            </FechasPagos>
+            <Periodo t-att-FechaIngreso="period.get('admission_date')"
+                     t-att-FechaRetiro="period.get('withdrawal_date', '')"
+                     t-att-FechaLiquidacionInicio="period.get('settlement_start_date')"
+                     t-att-FechaLiquidacionFin="period.get('settlement_end_date')"
+                     t-att-TiempoLaborado="period.get('amount_time')"
+                     t-att-FechaGen="period.get('date_issue')"/>
+
+            <Devengados>
+                <Basico t-if="earn_basic"
+                        t-att-DiasTrabajados="earn_basic.get('worked_days', 0)"
+                        t-att-SueldoTrabajado="earn_basic.get('worker_salary', '0.00')"/>
+
+                <Transporte t-if="earn_transports"
+                            t-att-AuxilioTransporte="earn_transports.get('assistance', '0.00')"
+                            t-att-ViaticoManuAlojS="earn_transports.get('viatic', '0.00')"
+                            t-att-ViaticoManuAlojNS="earn_transports.get('non_salary_viatic', '0.00')"/>
+
+                <HEDs t-if="earn_overtimes_surcharges">
+                    <HED t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '1']" t-as="extra"
+                         t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '25.00')" t-att-Pago="extra.get('payment', '0.00')"
+                         t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HEDs>
+                <HENs t-if="earn_overtimes_surcharges">
+                    <HEN t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '2']" t-as="extra"
+                         t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '75.00')" t-att-Pago="extra.get('payment', '0.00')"
+                         t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HENs>
+                <HRNs t-if="earn_overtimes_surcharges">
+                    <HRN t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '3']" t-as="extra"
+                         t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '35.00')" t-att-Pago="extra.get('payment', '0.00')"
+                         t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HRNs>
+                <HEDDFs t-if="earn_overtimes_surcharges">
+                    <HEDDF t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '4']" t-as="extra"
+                           t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '100.00')" t-att-Pago="extra.get('payment', '0.00')"
+                           t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HEDDFs>
+                <HRDDFs t-if="earn_overtimes_surcharges">
+                     <HRDDF t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '5']" t-as="extra"
+                            t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '75.00')" t-att-Pago="extra.get('payment', '0.00')"
+                            t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HRDDFs>
+                <HENDFs t-if="earn_overtimes_surcharges">
+                    <HENDF t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '6']" t-as="extra"
+                           t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '150.00')" t-att-Pago="extra.get('payment', '0.00')"
+                           t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HENDFs>
+                 <HRNDFs t-if="earn_overtimes_surcharges">
+                     <HRNDF t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '7']" t-as="extra"
+                            t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '110.00')" t-att-Pago="extra.get('payment', '0.00')"
+                            t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HRNDFs>
+
+                <Vacaciones t-if="earn_vacation">
+                    <VacacionesComunes t-if="earn_vacation.get('common')">
+                        <Vacaciones t-foreach="earn_vacation.get('common')" t-as="vac"
+                                    t-att-Cantidad="vac.get('quantity', 0)" t-att-Pago="vac.get('payment', '0.00')"
+                                    t-att-FechaInicio="vac.get('start', '')" t-att-FechaFin="vac.get('end', '')"/>
+                    </VacacionesComunes>
+                    <VacacionesCompensadas t-if="earn_vacation.get('compensated')">
+                        <Vacaciones t-foreach="earn_vacation.get('compensated')" t-as="vac"
+                                    t-att-Cantidad="vac.get('quantity', 0)" t-att-Pago="vac.get('payment', '0.00')"/>
+                    </VacacionesCompensadas>
+                </Vacaciones>
+
+                <Primas t-if="earn_primas"
+                        t-att-Cantidad="earn_primas.get('quantity', 0)"
+                        t-att-Pago="earn_primas.get('payment', '0.00')"
+                        t-att-PagoNS="earn_primas.get('non_salary_payment', '0.00')"/>
+
+                <Cesantias t-if="earn_layoffs"
+                           t-att-Pago="earn_layoffs.get('payment', '0.00')"
+                           t-att-Porcentaje="earn_layoffs.get('percentage', '0.00')"
+                           t-att-PagoIntereses="earn_layoffs.get('interest_payment', '0.00')"/>
+
+                <Incapacidades t-if="earn_incapacities">
+                    <Incapacidad t-foreach="earn_incapacities" t-as="inc"
+                                 t-att-Cantidad="inc.get('quantity', 0)" t-att-Tipo="inc.get('incapacity_code')" t-att-Pago="inc.get('payment', '0.00')"
+                                 t-att-FechaInicio="inc.get('start', '')" t-att-FechaFin="inc.get('end', '')"/>
+                </Incapacidades>
+
+                <Licencias t-if="earn_licensings">
+                    <LicenciaMP t-if="earn_licensings.get('licensings_maternity_or_paternity_leaves')">
+                        <Licencia t-foreach="earn_licensings.get('licensings_maternity_or_paternity_leaves')" t-as="lic"
+                                  t-att-Cantidad="lic.get('quantity', 0)" t-att-Pago="lic.get('payment', '0.00')"
+                                  t-att-FechaInicio="lic.get('start', '')" t-att-FechaFin="lic.get('end', '')"/>
+                    </LicenciaMP>
+                    <LicenciaR t-if="earn_licensings.get('licensings_permit_or_paid_licenses')">
+                         <Licencia t-foreach="earn_licensings.get('licensings_permit_or_paid_licenses')" t-as="lic"
+                                   t-att-Cantidad="lic.get('quantity', 0)" t-att-Pago="lic.get('payment', '0.00')"
+                                   t-att-FechaInicio="lic.get('start', '')" t-att-FechaFin="lic.get('end', '')"/>
+                    </LicenciaR>
+                    <LicenciaNR t-if="earn_licensings.get('licensings_suspension_or_unpaid_leaves')">
+                        <Licencia t-foreach="earn_licensings.get('licensings_suspension_or_unpaid_leaves')" t-as="lic"
+                                  t-att-Cantidad="lic.get('quantity', 0)"
+                                  t-att-FechaInicio="lic.get('start', '')" t-att-FechaFin="lic.get('end', '')"/>
+                    </LicenciaNR>
+                </Licencias>
+
+                <Bonificaciones t-if="earn_bonuses">
+                    <Bonificacion t-foreach="earn_bonuses" t-as="bonus"
+                                  t-att-BonoS="bonus.get('payment', '0.00')"
+                                  t-att-BonoNS="bonus.get('non_salary_payment', '0.00')"/>
+                </Bonificaciones>
+
+                <Auxilios t-if="earn_assistances">
+                    <Auxilio t-foreach="earn_assistances" t-as="assist"
+                             t-att-AuxilioS="assist.get('payment', '0.00')"
+                             t-att-AuxilioNS="assist.get('non_salary_payment', '0.00')"/>
+                </Auxilios>
+
+                <HuelgasLegales t-if="earn_legal_strikes">
+                    <HuelgaLegal t-foreach="earn_legal_strikes" t-as="strike"
+                                 t-att-Cantidad="strike.get('quantity', 0)"
+                                 t-att-FechaInicio="strike.get('start', '')" t-att-FechaFin="strike.get('end', '')"/>
+                </HuelgasLegales>
+
+                <OtrosConceptos t-if="earn_other_concepts">
+                    <OtroConcepto t-foreach="earn_other_concepts" t-as="other"
+                                  t-att-DescripcionConcepto="other.get('description', 'Otros Conceptos')"
+                                  t-att-ConceptoS="other.get('payment', '0.00')"
+                                  t-att-ConceptoNS="other.get('non_salary_payment', '0.00')"/>
+                </OtrosConceptos>
+
+                <Compensaciones t-if="earn_compensations">
+                    <Compensacion t-foreach="earn_compensations" t-as="comp"
+                                  t-att-CompensacionO="comp.get('ordinary', '0.00')"
+                                  t-att-CompensacionE="comp.get('extraordinary', '0.00')"/>
+                </Compensaciones>
+
+                <BonoEPCTVs t-if="earn_vouchers">
+                    <BonoEPCTV t-foreach="earn_vouchers" t-as="voucher"
+                               t-att-PagoS="voucher.get('payment', '0.00')"
+                               t-att-PagoNS="voucher.get('non_salary_payment', '0.00')"
+                               t-att-PagoAlimentacionS="voucher.get('salary_food_payment', '0.00')"
+                               t-att-PagoAlimentacionNS="voucher.get('non_salary_food_payment', '0.00')"/>
+                </BonoEPCTVs>
+
+                <Comisiones t-if="earn_commissions">
+                    <Comision t-foreach="earn_commissions" t-as="comm" t-att-Valor="comm.get('payment', '0.00')"/>
+                </Comisiones>
+
+                <PagosTerceros t-if="earn_third_party_payments">
+                    <PagoTercero t-foreach="earn_third_party_payments" t-as="third" t-att-Valor="third.get('payment', '0.00')"/>
+                </PagosTerceros>
+
+                <Anticipos t-if="earn_advances">
+                    <Anticipo t-foreach="earn_advances" t-as="adv" t-att-Valor="adv.get('payment', '0.00')"/>
+                </Anticipos>
+
+                <Dotacion t-if="earn_endowment" t-att-Valor="earn_endowment or '0.00'"/>
+                <ApoyoSost t-if="earn_sustainment_support" t-att-Valor="earn_sustainment_support or '0.00'"/>
+                <Teletrabajo t-if="earn_telecommuting" t-att-Valor="earn_telecommuting or '0.00'"/>
+                <BonifRetiro t-if="earn_company_withdrawal_bonus" t-att-Valor="earn_company_withdrawal_bonus or '0.00'"/>
+                <Indemnizacion t-if="earn_compensation" t-att-Valor="earn_compensation or '0.00'"/>
+                <Reintegro t-if="earn_refund" t-att-Valor="earn_refund or '0.00'"/>
+
+                <DevengadosTotal t-esc="accrued_total"/>
+            </Devengados>
+
+            <Deducciones>
+                <Salud t-if="deduction_health"
+                       t-att-Porcentaje="deduction_health.get('percentage', '0.00')"
+                       t-att-Deduccion="deduction_health.get('payment', '0.00')"/>
+
+                <FondoPension t-if="deduction_pension_fund">
+                    <Pension t-att-Porcentaje="deduction_pension_fund.get('percentage', '0.00')"
+                             t-att-Deduccion="deduction_pension_fund.get('payment', '0.00')"/>
+                </FondoPension>
+
+                <FondoSP t-if="deduction_pension_security_fund">
+                    <FondoSP t-att-Porcentaje="deduction_pension_security_fund.get('percentage', '0.00')"
+                             t-att-DeduccionSP="deduction_pension_security_fund.get('payment', '0.00')"
+                             t-att-PorcentajeSub="deduction_pension_security_fund.get('percentage_subsistence', '0.00')"
+                             t-att-DeduccionSub="deduction_pension_security_fund.get('payment_subsistence', '0.00')"/>
+                </FondoSP>
+
+                <Sindicatos t-if="deduction_trade_unions">
+                    <Sindicato t-foreach="deduction_trade_unions" t-as="union"
+                               t-att-Porcentaje="union.get('percentage', '0.00')"
+                               t-att-Deduccion="union.get('payment', '0.00')"/>
+                </Sindicatos>
+
+                <Sanciones t-if="deduction_sanctions">
+                    <Sancion t-foreach="deduction_sanctions" t-as="sanction"
+                             t-att-SancionPublica="sanction.get('payment_public', '0.00')"
+                             t-att-SancionPrivada="sanction.get('payment_private', '0.00')"/>
+                </Sanciones>
+
+                <Libranzas t-if="deduction_libranzas">
+                    <Libranza t-foreach="deduction_libranzas" t-as="lib"
+                              t-att-Descripcion="lib.get('description', '')"
+                              t-att-Valor="lib.get('payment', '0.00')"/>
+                </Libranzas>
+
+                <PagosTerceros t-if="deduction_third_party_payments">
+                    <PagoTercero t-foreach="deduction_third_party_payments" t-as="third" t-att-Valor="third.get('payment', '0.00')"/>
+                </PagosTerceros>
+
+                <Anticipos t-if="deduction_advances">
+                    <Anticipo t-foreach="deduction_advances" t-as="adv" t-att-Valor="adv.get('payment', '0.00')"/>
+                </Anticipos>
+
+                <OtrasDeducciones t-if="deduction_other_deductions">
+                    <OtraDeduccion t-foreach="deduction_other_deductions" t-as="other" t-att-Valor="other.get('payment', '0.00')"/>
+                </OtrasDeducciones>
+
+                <PensionVoluntaria t-if="deduction_voluntary_pension" t-att-Valor="deduction_voluntary_pension or '0.00'"/>
+                <RetencionFuente t-if="deduction_withholding_source" t-att-Valor="deduction_withholding_source or '0.00'"/>
+                <AFC t-if="deduction_afc" t-att-Valor="deduction_afc or '0.00'"/>
+                <Cooperativa t-if="deduction_cooperative" t-att-Valor="deduction_cooperative or '0.00'"/>
+                <EmbargoFiscal t-if="deduction_tax_lien" t-att-Valor="deduction_tax_lien or '0.00'"/>
+                <PlanComplementariosSalud t-if="deduction_complementary_plans" t-att-Valor="deduction_complementary_plans or '0.00'"/>
+                <Educacion t-if="deduction_education" t-att-Valor="deduction_education or '0.00'"/>
+                <Reintegro t-if="deduction_refund" t-att-Valor="deduction_refund or '0.00'"/>
+                <Deuda t-if="deduction_debt" t-att-Valor="deduction_debt or '0.00'"/>
+
+                <DeduccionesTotal t-esc="deductions_total"/>
+            </Deducciones>
+
+            <Redondeo t-esc="rounding or '0.00'"/>
+            <ComprobanteTotal t-esc="total"/>
+
+            <Notas t-if="notes">
+                <Nota t-foreach="notes" t-as="note_item" t-esc="note_item.get('text')"/>
+            </Notas>
+        </NominaIndividual>
+    </template>
+
+    <template id="nomina_individual_ajuste_xml_template" name="Plantilla XML Nota Ajuste Nomina DIAN">
+        <NominaIndividualDeAjuste xmlns="dian:gov:co:facturaelectronica:NominaIndividualDeAjuste"
+                                  xmlns:xs="http://www.w3.org/2001/XMLSchema-instance"
+                                  xmlns:ext="urn:oasis:names:specification:ubl:schema:xsd:CommonExtensionComponents-2"
+                                  xmlns:ds="http://www.w3.org/2000/09/xmldsig#"
+                                  xmlns:xades="http://uri.etsi.org/01903/v1.3.2#"
+                                  xmlns:xades141="http://uri.etsi.org/01903/v1.4.1#"
+                                  xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
+                                  xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
+
+            <NumeroSecuenciaXML t-att-Numero="sequence.get('number')"
+                                t-att-Prefijo="sequence.get('prefix')"
+                                t-att-CodigoTrabajador="employee.get('worker_code', '')"/>
+            <LugarGeneracionXML t-att-Pais="employer.get('country_code', 'CO')"
+                                t-att-Departamento="employer.get('department_code')"
+                                t-att-Municipio="employer.get('municipality_code')"
+                                t-att-Idioma="employer.get('language_code', 'es')"/>
+            <ProveedorXML t-if="provider.get('nit')"
+                          t-att-NIT="provider.get('nit')"
+                          t-att-DV="provider.get('dv')"
+                          t-att-SoftwareID="provider.get('software_id')"
+                          t-att-SoftwareSC="provider.get('software_security_code')"/>
+            <QR/>
+            <InformacionGeneral t-att-Version="'V1.0: NominaIndividualDeAjuste'"
+                                t-att-Ambiente="environment.get('code', '2')"
+                                t-att-TipoXML="tip_xml"
+                                t-att-CUNE="cune"
+                                t-att-EncripCUNE="'CONTENIDO_ENCRIPCUNE'"
+                                t-att-FechaGen="period.get('date_issue')"
+                                t-att-HoraGen="period.get('time_issue')"
+                                t-att-PeriodoNomina="information.get('payroll_period_code')"
+                                t-att-TipoMoneda="information.get('currency_code_alpha', 'COP')"
+                                t-att-TRM="information.get('trm', '0.00')"
+                                t-att-TipoNota="note_type"/>
+            <Predecesor t-if="predecessor"
+                        t-att-NumeroSecuenciaXMLPred="predecessor.get('sequence_number')"
+                        t-att-PrefijoPred="predecessor.get('sequence_prefix')"
+                        t-att-CUNEPred="predecessor.get('cune')"
+                        t-att-FechaGenPred="predecessor.get('issue_date')"/>
+            <Novedad t-if="novelty" t-att-Codigo="novelty.get('code')" t-esc="novelty.get('text')"/>
+            <Empleador t-att-RazonSocial="employer.get('name')"
+                       t-att-NIT="employer.get('id_number')"
+                       t-att-DV="employer.get('dv')"
+                       t-att-Pais="employer.get('country_code', 'CO')"
+                       t-att-Departamento="employer.get('department_code')"
+                       t-att-Municipio="employer.get('municipality_code')"
+                       t-att-Direccion="employer.get('address')"/>
+            <Trabajador t-att-TipoTrabajador="employee.get('type_worker_code')"
+                        t-att-SubTipoTrabajador="employee.get('subtype_worker_code')"
+                        t-att-AltoRiesgoPension="employee.get('high_risk_pension', 'false')"
+                        t-att-TipoDocumento="employee.get('id_code')"
+                        t-att-NumeroDocumento="employee.get('id_number')"
+                        t-att-PrimerApellido="employee.get('surname')"
+                        t-att-SegundoApellido="employee.get('second_surname', '')"
+                        t-att-PrimerNombre="employee.get('first_name')"
+                        t-att-OtrosNombres="employee.get('other_names', '')"
+                        t-att-LugarTrabajoPais="employee.get('country_code', 'CO')"
+                        t-att-LugarTrabajoDepartamento="employee.get('department_code')"
+                        t-att-LugarTrabajoMunicipio="employee.get('municipality_code')"
+                        t-att-LugarTrabajoDireccion="employee.get('address')"
+                        t-att-SalarioIntegral="employee.get('integral_salary', 'false')"
+                        t-att-TipoContrato="employee.get('contract_code')"
+                        t-att-Sueldo="employee.get('salary', '0.00')"
+                        t-att-CodigoTrabajador="employee.get('worker_code', '')"/>
+            <Pago t-att-Metodo="payment.get('method_code')"
+                  t-att-Banco="payment.get('bank', '')"
+                  t-att-TipoCuenta="payment.get('account_type', '')"
+                  t-att-NumeroCuenta="payment.get('account_number', '')"/>
+            <FechasPagos>
+                <FechaPago t-foreach="payment_dates" t-as="pay_date" t-att-FechaPago="pay_date.get('date')"/>
+            </FechasPagos>
+            <Periodo t-att-FechaIngreso="period.get('admission_date')"
+                     t-att-FechaRetiro="period.get('withdrawal_date', '')"
+                     t-att-FechaLiquidacionInicio="period.get('settlement_start_date')"
+                     t-att-FechaLiquidacionFin="period.get('settlement_end_date')"
+                     t-att-TiempoLaborado="period.get('amount_time')"
+                     t-att-FechaGen="period.get('date_issue')"/>
+
+            <Devengados>
+                <Basico t-if="earn_basic"
+                        t-att-DiasTrabajados="earn_basic.get('worked_days', 0)"
+                        t-att-SueldoTrabajado="earn_basic.get('worker_salary', '0.00')"/>
+
+                <Transporte t-if="earn_transports"
+                            t-att-AuxilioTransporte="format_value(sum(float(t.get('assistance', '0.0')) for t in earn_transports))"
+                            t-att-ViaticoManuAlojS="format_value(sum(float(t.get('viatic', '0.0')) for t in earn_transports))"
+                            t-att-ViaticoManuAlojNS="format_value(sum(float(t.get('non_salary_viatic', '0.0')) for t in earn_transports))"/>
+
+                <HEDs t-if="earn_overtimes_surcharges">
+                    <HED t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '1']" t-as="extra"
+                         t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '25.00')" t-att-Pago="extra.get('payment', '0.00')"
+                         t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HEDs>
+                <HENs t-if="earn_overtimes_surcharges">
+                    <HEN t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '2']" t-as="extra"
+                         t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '75.00')" t-att-Pago="extra.get('payment', '0.00')"
+                         t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HENs>
+                <HRNs t-if="earn_overtimes_surcharges">
+                    <HRN t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '3']" t-as="extra"
+                         t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '35.00')" t-att-Pago="extra.get('payment', '0.00')"
+                         t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HRNs>
+                <HEDDFs t-if="earn_overtimes_surcharges">
+                    <HEDDF t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '4']" t-as="extra"
+                           t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '100.00')" t-att-Pago="extra.get('payment', '0.00')"
+                           t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HEDDFs>
+                <HRDDFs t-if="earn_overtimes_surcharges">
+                     <HRDDF t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '5']" t-as="extra"
+                            t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '75.00')" t-att-Pago="extra.get('payment', '0.00')"
+                            t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HRDDFs>
+                <HENDFs t-if="earn_overtimes_surcharges">
+                    <HENDF t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '6']" t-as="extra"
+                           t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '150.00')" t-att-Pago="extra.get('payment', '0.00')"
+                           t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HENDFs>
+                 <HRNDFs t-if="earn_overtimes_surcharges">
+                     <HRNDF t-foreach="[e for e in earn_overtimes_surcharges if e.get('time_code') == '7']" t-as="extra"
+                            t-att-Cantidad="extra.get('quantity', '0.00')" t-att-Porcentaje="extra.get('percentage', '110.00')" t-att-Pago="extra.get('payment', '0.00')"
+                            t-att-HoraInicio="extra.get('start', '')" t-att-HoraFin="extra.get('end', '')"/>
+                </HRNDFs>
+                <Vacaciones t-if="earn_vacation">
+                    <VacacionesComunes t-if="earn_vacation.get('common')">
+                        <Vacaciones t-foreach="earn_vacation.get('common')" t-as="vac"
+                                    t-att-Cantidad="vac.get('quantity', 0)" t-att-Pago="vac.get('payment', '0.00')"
+                                    t-att-FechaInicio="vac.get('start', '')" t-att-FechaFin="vac.get('end', '')"/>
+                    </VacacionesComunes>
+                    <VacacionesCompensadas t-if="earn_vacation.get('compensated')">
+                        <Vacaciones t-foreach="earn_vacation.get('compensated')" t-as="vac"
+                                    t-att-Cantidad="vac.get('quantity', 0)" t-att-Pago="vac.get('payment', '0.00')"/>
+                    </VacacionesCompensadas>
+                </Vacaciones>
+                <Primas t-if="earn_primas" t-att-Cantidad="earn_primas.get('quantity', 0)" t-att-Pago="earn_primas.get('payment', '0.00')" t-att-PagoNS="earn_primas.get('non_salary_payment', '0.00')"/>
+                <Cesantias t-if="earn_layoffs" t-att-Pago="earn_layoffs.get('payment', '0.00')" t-att-Porcentaje="earn_layoffs.get('percentage', '0.00')" t-att-PagoIntereses="earn_layoffs.get('interest_payment', '0.00')"/>
+                <Incapacidades t-if="earn_incapacities">
+                    <Incapacidad t-foreach="earn_incapacities" t-as="inc" t-att-Cantidad="inc.get('quantity', 0)" t-att-Tipo="inc.get('incapacity_code')" t-att-Pago="inc.get('payment', '0.00')" t-att-FechaInicio="inc.get('start', '')" t-att-FechaFin="inc.get('end', '')"/>
+                </Incapacidades>
+                <Licencias t-if="earn_licensings">
+                    <LicenciaMP t-if="earn_licensings.get('licensings_maternity_or_paternity_leaves')">
+                        <Licencia t-foreach="earn_licensings.get('licensings_maternity_or_paternity_leaves')" t-as="lic" t-att-Cantidad="lic.get('quantity', 0)" t-att-Pago="lic.get('payment', '0.00')" t-att-FechaInicio="lic.get('start', '')" t-att-FechaFin="lic.get('end', '')"/>
+                    </LicenciaMP>
+                    <LicenciaR t-if="earn_licensings.get('licensings_permit_or_paid_licenses')">
+                         <Licencia t-foreach="earn_licensings.get('licensings_permit_or_paid_licenses')" t-as="lic" t-att-Cantidad="lic.get('quantity', 0)" t-att-Pago="lic.get('payment', '0.00')" t-att-FechaInicio="lic.get('start', '')" t-att-FechaFin="lic.get('end', '')"/>
+                    </LicenciaR>
+                    <LicenciaNR t-if="earn_licensings.get('licensings_suspension_or_unpaid_leaves')">
+                        <Licencia t-foreach="earn_licensings.get('licensings_suspension_or_unpaid_leaves')" t-as="lic" t-att-Cantidad="lic.get('quantity', 0)" t-att-FechaInicio="lic.get('start', '')" t-att-FechaFin="lic.get('end', '')"/>
+                    </LicenciaNR>
+                </Licencias>
+                <Bonificaciones t-if="earn_bonuses">
+                    <Bonificacion t-foreach="earn_bonuses" t-as="bonus" t-att-BonoS="bonus.get('payment', '0.00')" t-att-BonoNS="bonus.get('non_salary_payment', '0.00')"/>
+                </Bonificaciones>
+                <Auxilios t-if="earn_assistances">
+                    <Auxilio t-foreach="earn_assistances" t-as="assist" t-att-AuxilioS="assist.get('payment', '0.00')" t-att-AuxilioNS="assist.get('non_salary_payment', '0.00')"/>
+                </Auxilios>
+                <HuelgasLegales t-if="earn_legal_strikes">
+                    <HuelgaLegal t-foreach="earn_legal_strikes" t-as="strike" t-att-Cantidad="strike.get('quantity', 0)" t-att-FechaInicio="strike.get('start', '')" t-att-FechaFin="strike.get('end', '')"/>
+                </HuelgasLegales>
+                <OtrosConceptos t-if="earn_other_concepts">
+                    <OtroConcepto t-foreach="earn_other_concepts" t-as="other" t-att-DescripcionConcepto="other.get('description', 'Otros Conceptos')" t-att-ConceptoS="other.get('payment', '0.00')" t-att-ConceptoNS="other.get('non_salary_payment', '0.00')"/>
+                </OtrosConceptos>
+                <Compensaciones t-if="earn_compensations">
+                    <Compensacion t-foreach="earn_compensations" t-as="comp" t-att-CompensacionO="comp.get('ordinary', '0.00')" t-att-CompensacionE="comp.get('extraordinary', '0.00')"/>
+                </Compensaciones>
+                <BonoEPCTVs t-if="earn_vouchers">
+                    <BonoEPCTV t-foreach="earn_vouchers" t-as="voucher" t-att-PagoS="voucher.get('payment', '0.00')" t-att-PagoNS="voucher.get('non_salary_payment', '0.00')" t-att-PagoAlimentacionS="voucher.get('salary_food_payment', '0.00')" t-att-PagoAlimentacionNS="voucher.get('non_salary_food_payment', '0.00')"/>
+                </BonoEPCTVs>
+                <Comisiones t-if="earn_commissions">
+                    <Comision t-foreach="earn_commissions" t-as="comm" t-att-Valor="comm.get('payment', '0.00')"/>
+                </Comisiones>
+                <PagosTerceros t-if="earn_third_party_payments">
+                    <PagoTercero t-foreach="earn_third_party_payments" t-as="third" t-att-Valor="third.get('payment', '0.00')"/>
+                </PagosTerceros>
+                <Anticipos t-if="earn_advances">
+                    <Anticipo t-foreach="earn_advances" t-as="adv" t-att-Valor="adv.get('payment', '0.00')"/>
+                </Anticipos>
+                <Dotacion t-if="earn_endowment" t-att-Valor="earn_endowment or '0.00'"/>
+                <ApoyoSost t-if="earn_sustainment_support" t-att-Valor="earn_sustainment_support or '0.00'"/>
+                <Teletrabajo t-if="earn_telecommuting" t-att-Valor="earn_telecommuting or '0.00'"/>
+                <BonifRetiro t-if="earn_company_withdrawal_bonus" t-att-Valor="earn_company_withdrawal_bonus or '0.00'"/>
+                <Indemnizacion t-if="earn_compensation" t-att-Valor="earn_compensation or '0.00'"/>
+                <Reintegro t-if="earn_refund" t-att-Valor="earn_refund or '0.00'"/>
+                <DevengadosTotal t-esc="accrued_total"/>
+            </Devengados>
+            
+            <Deducciones>
+                <Salud t-if="deduction_health"
+                       t-att-Porcentaje="deduction_health.get('percentage', '0.00')"
+                       t-att-Deduccion="deduction_health.get('payment', '0.00')"/>
+                <FondoPension t-if="deduction_pension_fund">
+                    <Pension t-att-Porcentaje="deduction_pension_fund.get('percentage', '0.00')"
+                             t-att-Deduccion="deduction_pension_fund.get('payment', '0.00')"/>
+                </FondoPension>
+                <FondoSP t-if="deduction_pension_security_fund">
+                    <FondoSP t-att-Porcentaje="deduction_pension_security_fund.get('percentage', '0.00')"
+                             t-att-DeduccionSP="deduction_pension_security_fund.get('payment', '0.00')"
+                             t-att-PorcentajeSub="deduction_pension_security_fund.get('percentage_subsistence', '0.00')"
+                             t-att-DeduccionSub="deduction_pension_security_fund.get('payment_subsistence', '0.00')"/>
+                </FondoSP>
+                <Sindicatos t-if="deduction_trade_unions">
+                    <Sindicato t-foreach="deduction_trade_unions" t-as="union"
+                               t-att-Porcentaje="union.get('percentage', '0.00')"
+                               t-att-Deduccion="union.get('payment', '0.00')"/>
+                </Sindicatos>
+                <Sanciones t-if="deduction_sanctions">
+                    <Sancion t-foreach="deduction_sanctions" t-as="sanction"
+                             t-att-SancionPublica="sanction.get('payment_public', '0.00')"
+                             t-att-SancionPrivada="sanction.get('payment_private', '0.00')"/>
+                </Sanciones>
+                <Libranzas t-if="deduction_libranzas">
+                    <Libranza t-foreach="deduction_libranzas" t-as="lib"
+                              t-att-Descripcion="lib.get('description', '')"
+                              t-att-Valor="lib.get('payment', '0.00')"/>
+                </Libranzas>
+                <PagosTerceros t-if="deduction_third_party_payments">
+                    <PagoTercero t-foreach="deduction_third_party_payments" t-as="third" t-att-Valor="third.get('payment', '0.00')"/>
+                </PagosTerceros>
+                <Anticipos t-if="deduction_advances">
+                    <Anticipo t-foreach="deduction_advances" t-as="adv" t-att-Valor="adv.get('payment', '0.00')"/>
+                </Anticipos>
+                <OtrasDeducciones t-if="deduction_other_deductions">
+                    <OtraDeduccion t-foreach="deduction_other_deductions" t-as="other" t-att-Valor="other.get('payment', '0.00')"/>
+                </OtrasDeducciones>
+                <PensionVoluntaria t-if="deduction_voluntary_pension" t-att-Valor="deduction_voluntary_pension or '0.00'"/>
+                <RetencionFuente t-if="deduction_withholding_source" t-att-Valor="deduction_withholding_source or '0.00'"/>
+                <AFC t-if="deduction_afc" t-att-Valor="deduction_afc or '0.00'"/>
+                <Cooperativa t-if="deduction_cooperative" t-att-Valor="deduction_cooperative or '0.00'"/>
+                <EmbargoFiscal t-if="deduction_tax_lien" t-att-Valor="deduction_tax_lien or '0.00'"/>
+                <PlanComplementariosSalud t-if="deduction_complementary_plans" t-att-Valor="deduction_complementary_plans or '0.00'"/>
+                <Educacion t-if="deduction_education" t-att-Valor="deduction_education or '0.00'"/>
+                <Reintegro t-if="deduction_refund" t-att-Valor="deduction_refund or '0.00'"/>
+                <Deuda t-if="deduction_debt" t-att-Valor="deduction_debt or '0.00'"/>
+                <DeduccionesTotal t-esc="deductions_total"/>
+            </Deducciones>
+            
+            <Redondeo t-esc="rounding or '0.00'"/>
+            <ComprobanteTotal t-esc="total"/>
+            <Notas t-if="notes">
+                <Nota t-foreach="notes" t-as="note_item" t-esc="note_item.get('text')"/>
+            </Notas>
+
+        </NominaIndividualDeAjuste>
+    </template>
+
+</odoo>

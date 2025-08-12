@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="res_config_settings_view_form_l10n_co_hr_payroll" model="ir.ui.view">
+        <field name="name">res.config.settings.view.form.l10n_co_hr_payroll.inherit</field>
+        <field name="model">res.config.settings</field>
+        <field name="inherit_id" ref="hr_payroll.res_config_settings_view_form"/>
+        <field name="arch" type="xml">
+            <xpath expr="//block[@id='hr_payroll_accountant']" position="before">
+                <field name="module_l10n_co_hr_payroll" invisible="1"/>
+            </xpath>
+            <xpath expr="//div[@id='localization_text']/parent::setting" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+
+            <xpath expr="//block[@id='hr_payroll_settings']" position="after">
+                <h2>Parámetros de Nómina Colombia</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Parámetros Legales</span>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="smmlv_value" class="col-lg-3 o_light_label"/>
+                                    <field name="smmlv_value"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="uvt_value" class="col-lg-3 o_light_label"/>
+                                    <field name="uvt_value"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="stm_value" class="col-lg-3 o_light_label"/>
+                                    <field name="stm_value"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Horas Extras y Recargos</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Porcentajes de Horas Extras</span>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="daily_overtime" class="col-lg-3 o_light_label"/>
+                                    <field name="daily_overtime"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="overtime_night_hours" class="col-lg-3 o_light_label"/>
+                                    <field name="overtime_night_hours"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="sunday_holiday_daily_overtime" class="col-lg-3 o_light_label"/>
+                                    <field name="sunday_holiday_daily_overtime"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="sunday_night_overtime_holidays" class="col-lg-3 o_light_label"/>
+                                    <field name="sunday_night_overtime_holidays"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Porcentajes de Recargos</span>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="hours_night_surcharge" class="col-lg-3 o_light_label"/>
+                                    <field name="hours_night_surcharge"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="daily_surcharge_hours_sundays_holidays" class="col-lg-3 o_light_label"/>
+                                    <field name="daily_surcharge_hours_sundays_holidays"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="sunday_holidays_night_surcharge_hours" class="col-lg-3 o_light_label"/>
+                                    <field name="sunday_holidays_night_surcharge_hours"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <h2>Configuración Nómina Electrónica (APIDIAN)</h2>
+                <div class="row mt16 o_settings_container">
+                    <div class="col-12 col-lg-6 o_setting_box" id="dian_enable_setting">
+                        <div class="o_setting_left_pane">
+                            <field name="edi_payroll_enable"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label for="edi_payroll_enable"/>
+                            <div class="text-muted">
+                                Marque esta casilla para activar el envío de documentos de nómina electrónica a la DIAN.
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Credenciales y Software</span>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="l10n_co_payroll_api_url" class="col-lg-4 o_light_label"/>
+                                    <field name="l10n_co_payroll_api_url"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="l10n_co_payroll_api_token" class="col-lg-4 o_light_label"/>
+                                    <field name="l10n_co_payroll_api_token" password="True"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="l10n_co_payroll_software_id" class="col-lg-4 o_light_label"/>
+                                    <field name="l10n_co_payroll_software_id"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="l10n_co_payroll_software_pin" class="col-lg-4 o_light_label"/>
+                                    <field name="l10n_co_payroll_software_pin" password="True"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="l10n_co_payroll_test_set_id" class="col-lg-4 o_light_label"/>
+                                    <field name="l10n_co_payroll_test_set_id"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Certificado Digital</span>
+                            <div class="text-muted">
+                                Cargue el archivo del certificado (.p12) y su contraseña.
+                            </div>
+                            <div class="content-group">
+                                <div class="row mt16">
+                                    <label for="l10n_co_payroll_certificate_file" class="col-lg-4 o_light_label"/>
+                                    <field name="l10n_co_payroll_certificate_file" filename="'certificate.p12'"/>
+                                </div>
+                                <div class="row mt16">
+                                    <label for="l10n_co_payroll_certificate_password" class="col-lg-4 o_light_label"/>
+                                    <field name="l10n_co_payroll_certificate_password" password="True"/>
+                                </div>
+                                <div class="mt16">
+                                    <field name="edi_payroll_is_not_test"/>
+                                    <label for="edi_payroll_is_not_test"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box" id="dian_payroll_resolution_setting">
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Resolución por Defecto</span>
+                            <div class="text-muted">
+                                Seleccione la resolución que se usará por defecto. La lista completa de resoluciones se gestiona desde el formulario de la Compañía.
+                            </div>
+                            <div class="content-group">
+                                <field name="l10n_co_nomina_default_resolution_id" domain="[('type_document_id', 'in', ('9', '10'))]"/>
+                                
+                                <div class="row mt-2" invisible="[('l10n_co_nomina_default_resolution_id', '=', False)]">
+                                    <label for="prefix" class="col-lg-3 o_light_label"/>
+                                    <field name="prefix"/>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12 col-lg-6 o_setting_box">
+                         <div class="o_setting_right_pane">
+                             <span class="o_form_label">Acciones</span>
+                             <div class="text-muted">
+                                 Use este botón para enviar toda la configuración a la API de APIDIAN.
+                             </div>
+                             <div class="content-group">
+                                 <div class="mt16">
+                                     <button name="action_sync_apidian_config" string="Sincronizar Configuraciones con APIDIAN" type="object" class="btn-primary"/>
+                                 </div>
+                             </div>
+                         </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane">
+                            <field name="ley_1607"/>
+                        </div>
+                        <div class="o_setting_right_pane">
+                            <label string="Aplica Exoneración Ley 1607 de 2012" for="ley_1607"/>
+                            <div class="text-muted">Marcar si la compañía está exonerada del pago de aportes parafiscales (SENA, ICBF) y salud para empleados que devenguen menos de 10 SMMLV.</div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-lg-6 o_setting_box">
+                        <div class="o_setting_left_pane"/>
+                        <div class="o_setting_right_pane">
+                            <span class="o_form_label">Periodicidad de Nómina</span>
+                            <div class="content-group">
+                                <field name="payroll_periodicity"/>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+
+    <record id="view_l10n_co_hr_payroll_edi_gen_wizard_form" model="ir.ui.view">
+        <field name="name">l10n_co_hr_payroll.edi_gen.wizard.form</field>
+        <field name="model">l10n_co_hr_payroll.edi_gen</field>
+        <field name="arch" type="xml">
+            <form string="Generar Nóminas Electrónicas">
+                <p>
+                    Este asistente buscará todas las nóminas individuales del período seleccionado
+                    que estén en estado 'Hecho' o 'Pagado' y creará (o actualizará) los registros
+                    de Nómina Electrónica Consolidada correspondientes para su posterior envío a la DIAN.
+                </p>
+                <group>
+                    <group>
+                        <field name="year"/>
+                        <field name="month"/>
+                    </group>
+                    <group>
+                        <field name="payroll_type" widget="radio" required="1"/>
+                    </group>
+                </group>
+                <footer>
+                    <button name="generate" type="object" string="Generar" class="btn-primary" data-hotkey="q"/>
+                    <button string="Cancelar" class="btn-secondary" special="cancel" data-hotkey="z"/>
+                </footer>
+            </form>
+        </field>
+    </record>
+
+    <record id="action_hr_payslip_edi_generate" model="ir.actions.act_window">
+        <field name="name">Generar Nómina Electrónica</field>
+        <field name="res_model">l10n_co_hr_payroll.edi_gen</field>
+        <field name="view_mode">form</field>
+        <field name="target">new</field>
+        <field name="view_id" ref="view_l10n_co_hr_payroll_edi_gen_wizard_form"/>
+    </record>
+
+    <menuitem id="menu_hr_payroll_edi_generate"
+              name="Generar Nómina Electrónica"
+              parent="l10n_co_nomina.menu_hr_payroll_edi_payslips_root"
+              action="action_hr_payslip_edi_generate"
+              sequence="5"/>
+
+</odoo>

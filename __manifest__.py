@@ -27,26 +27,16 @@
             'mail',
     ],
     'data': [
-        # Mover 'security/ir.model.access.csv' a una posición posterior
-        # para asegurar que los modelos Python ya estén cargados.
-        # Es común ponerlo después de los archivos de datos iniciales
-        # y antes de las vistas.
-
-        # Data - SOLO DEJAR ACTIVO EL ARCHIVO DE ESTRUCTURA
         'data/resource_calendar_data.xml',
-        'data/hr_payroll_structure_data.xml',   # <-- ¡¡ÚNICO ARCHIVO DE DATOS ACTIVO!!
+        'data/hr_payroll_structure_data.xml',
         'data/hr_salary_rule_data.xml',
-        # 'data/hr_payroll_structure_rule_link_data.xml',
         'data/hr_payroll_sequence.xml',
         'data/hr_payroll_catalogues_data.xml',
         'data/hr_leave_type_data.xml',
         'data/hr_payslip_input_type_data.xml',
         'data/hr_arl_risk_level_data.xml',
         'data/hr_work_entry_type_data.xml',
-
-        # SECURITY: Colocar aquí, después de los datos iniciales y antes de las vistas.
-        # Esto asegura que los modelos Python ya estén registrados.
-        'security/ir.model.access.csv',  # <-- ¡POSICIÓN CORREGIDA!
+        'security/ir.model.access.csv',  
 
         # Vistas
         'views/l10n_co_nomina_catalog_views.xml',
@@ -60,12 +50,13 @@
         'views/edi_gen_views.xml',
         'views/hr_employee_views.xml',
         'views/res_config_settings_views.xml',
+        'views/l10n_co_nomina_resolution_views.xml',
         'views/res_company_views.xml',
         'views/hr_leave_type_views.xml',
         'views/hr_payslip_account_move_report.xml',
         'views/payroll_electronic_templates.xml',
         'views/hr_payslip_report_views.xml',
-        'views/hr_payslip_api_buttons_views.xml',
+        
 
         # Wizards
         'wizard/edi_gen_wizard_views.xml',

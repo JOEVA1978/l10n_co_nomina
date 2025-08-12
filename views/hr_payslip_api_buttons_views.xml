@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <record id="hr_payslip_form_view_inherit_api_buttons" model="ir.ui.view">
+        <field name="name">hr.payslip.form.inherit.api.buttons</field>
+        <field name="model">hr.payslip</field>
+        <field name="inherit_id" ref="hr_payroll.view_hr_payslip_form"/>
+        <field name="arch" type="xml">
+
+            <!-- Botones en el header -->
+            <xpath expr="//header" position="inside">
+                <button name="validate_dian" 
+                        type="object" 
+                        string="Validar Nómina DIAN (API)"
+                        class="oe_highlight o_payslip_validate" 
+                        modifiers='{"invisible": [["edi_is_valid", "=", true], ["state", "not in", ["done", "paid"]]]}'
+                        help="Envía este recibo de nómina a la DIAN a través de la API de APIDIAN."/>
+
+                <button name="action_generate_draft_account_move"
+                        string="Crear Asiento Contable (Borrador)"
+                        type="object"
+                        class="oe_highlight"
+                        modifiers='{"invisible": [["state", "not in", ["draft", "verify"]], ["move_id", "!=", false]]}'
+                        help="Genera un asiento contable en estado borrador para este recibo de nómina. Si ya existe, lo abre."/>
+
+                <button name="action_print_payslip_account_move"
+                        string="Imprimir Recibo Contable"
+                        type="object"
+                        class="oe_highlight"
+                        modifiers='{"invisible": [["move_id", "=", false]]}'/>
+            </xpath>
+
+            <!-- Botones en el button_box (estadísticas) -->
+            <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="dian_preview" type="object" class="oe_stat_button" icon="fa-globe" 
+                        modifiers='{"invisible": [["l10n_co_edi_qr_code_url", "=", false]]}'
+                        help="Ver la representación gráfica de la Nómina Electrónica en el portal de la DIAN.">
+                    <div class="o_field_widget o_stat_info">
+                        <span class="o_stat_text">DIAN</span>
+                        <span class="o_stat_text">Web View</span>
+                    </div>
+                </button>
+                <button name="l10n_co_edi_xml_file_download"
+                        string="Descargar XML DIAN"
+                        type="object"
+                        icon="fa-download"
+                        modifiers='{"invisible": [["l10n_co_edi_xml_file", "=", false]]}'/>
+                <button name="l10n_co_edi_pdf_file_download"
+                        string="Descargar PDF DIAN"
+                        type="object"
+                        icon="fa-download"
+                        modifiers='{"invisible": [["l10n_co_edi_pdf_file", "=", false]]}'/>
+            </xpath>
+
+            <!-- Pestaña de Nómina Electrónica -->
+            <!-- CORREGIDO: XPath más robusto para añadir la página dentro del notebook -->
+            <xpath expr="//notebook" position="inside"> 
+                <page string="Nómina Electrónica DIAN" name="dian_payroll_api_info">
+                    <group>
+                        <group string="Estado de Envío API">
+                            <field name="edi_is_valid" readonly="1"/>
+                            <field name="edi_state" readonly="1"/>
+                            <field name="l10n_co_edi_cune" readonly="1"/>
+                            <field name="l10n_co_edi_qr_code_url" widget="url" text="Ver QR DIAN" readonly="1"/>
+                        </group>
+                        <group string="Archivos Generados (Base64 - Oculto)">
+                            <field name="l10n_co_edi_xml_file" invisible="1"/>
+                            <field name="l10n_co_edi_pdf_file" invisible="1"/>
+                        </group>
+                    </group>
+                </page>
+            </xpath>
+        </field>
+    </record>
+</odoo>

@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="view_city_form_inherit_apidian" model="ir.ui.view">
+        <field name="name">res.city.form.inherit.apidian</field>
+        <field name="model">res.city</field>
+        <field name="inherit_id" ref="base.view_city_form"/>
+        <field name="arch" type="xml">
+            <field name="name" position="after">
+                <field name="apidian_code"/>
+            </field>
+        </field>
+    </record>
+</odoo>

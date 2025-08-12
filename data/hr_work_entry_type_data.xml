@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+
+        <record id="work_entry_type_vacdisf" model="hr.work.entry.type">
+            <field name="name">Vacaciones Disfrutadas (VACDISF)</field>
+            <field name="code">VACDISF</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_vacdisf')])]"/>
+            <field name="color">-5</field> <!-- Color sugerido para ausencias pagas -->
+        </record>
+
+        <record id="work_entry_type_lma" model="hr.work.entry.type">
+            <field name="name">Licencia Maternidad/Paternidad (LMA)</field>
+            <field name="code">LMA</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_lma')])]"/>
+            <field name="color">-5</field>
+        </record>
+
+        <record id="work_entry_type_lr" model="hr.work.entry.type">
+            <field name="name">Permiso Remunerado (LR)</field>
+            <field name="code">LR</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_lr')])]"/>
+            <field name="color">-5</field>
+        </record>
+
+        <!-- Tipo general IGE (si se mantiene por compatibilidad) -->
+        <record id="work_entry_type_ige" model="hr.work.entry.type">
+            <field name="name">Incapacidad General (IGE)</field>
+            <field name="code">IGE</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_ige')])]"/>
+            <field name="color">-5</field>
+        </record>
+
+        <!-- Tipos granulares IGE -->
+        <record id="work_entry_type_ige1_2" model="hr.work.entry.type">
+            <field name="name">Incapacidad General Días 1-2 (IGE1_2)</field>
+            <field name="code">IGE1_2</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_ige1_2')])]"/>
+            <field name="color">-5</field>
+        </record>
+        <record id="work_entry_type_ige3_90" model="hr.work.entry.type">
+            <field name="name">Incapacidad General Días 3-90 (IGE3_90)</field>
+            <field name="code">IGE3_90</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_ige3_90')])]"/>
+            <field name="color">-5</field>
+        </record>
+        <record id="work_entry_type_ige91_180" model="hr.work.entry.type">
+            <field name="name">Incapacidad General Días 91-180 (IGE91_180)</field>
+            <field name="code">IGE91_180</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_ige91_180')])]"/>
+            <field name="color">-5</field>
+        </record>
+        <record id="work_entry_type_ige181_mas" model="hr.work.entry.type">
+            <field name="name">Incapacidad General Días 181+ (IGE181_MAS)</field>
+            <field name="code">IGE181_MAS</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_ige181_mas')])]"/>
+            <field name="color">-5</field>
+        </record>
+
+        <record id="work_entry_type_atep" model="hr.work.entry.type">
+            <field name="name">Incapacidad Laboral AT/EP (ATEP)</field>
+            <field name="code">ATEP</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_atep')])]"/>
+            <field name="color">-5</field>
+        </record>
+
+        <record id="work_entry_type_lnr" model="hr.work.entry.type">
+            <field name="name">Licencia No Remunerada (LNR)</field>
+            <field name="code">LNR</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_lnr')])]"/>
+            <field name="color">-10</field> <!-- Color sugerido para ausencias no pagas -->
+        </record>
+
+        <record id="work_entry_type_sus" model="hr.work.entry.type">
+            <field name="name">Suspensión del Contrato (SUS)</field>
+            <field name="code">SUS</field>
+            <field name="round_days">FULL</field>
+            <field name="round_days_type">HALF-UP</field> <!-- CORRECCIÓN FINAL -->
+            <field name="is_leave">True</field>
+            <!-- CORRECCIÓN POTENCIAL: Check external ID -->
+            <field name="leave_type_ids" eval="[(6, 0, [ref('l10n_co_nomina.hr_leave_type_sus')])]"/>
+            <field name="color">-10</field>
+        </record>
+
+    </data>
+</odoo>

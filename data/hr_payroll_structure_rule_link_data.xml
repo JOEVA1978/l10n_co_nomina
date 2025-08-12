@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    
+    <data noupdate="1">
+
+        <!-- Actualizamos la estructura para añadir las reglas -->
+        <record id="l10n_co_nomina.hr_payroll_structure_co_base" model="hr.payroll.structure">
+            <!-- Lista de TODAS las reglas salariales a vincular -->
+            <field name="rule_ids" eval="[
+                (6, 0, [
+                    ref('l10n_co_nomina.hr_rule_salario_basico'),
+                    ref('l10n_co_nomina.hr_rule_auxilio_transporte'),
+                    ref('l10n_co_nomina.hr_rule_hora_extra_diurna'),
+                    ref('l10n_co_nomina.hr_rule_hora_extra_nocturna'),
+                    ref('l10n_co_nomina.hr_rule_recargo_nocturno'),
+                    ref('l10n_co_nomina.hr_rule_hora_extra_dom_fest_diurna'),
+                    ref('l10n_co_nomina.hr_rule_recargo_dom_fest_diurno'),
+                    ref('l10n_co_nomina.hr_rule_hora_extra_dom_fest_nocturna'),
+                    ref('l10n_co_nomina.hr_rule_recargo_dom_fest_nocturno'),                ])
+            ]"/>
+        </record>
+
+    </data>
+</odoo>

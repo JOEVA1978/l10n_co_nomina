@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data>
+        <!-- 
+            1. ACCIÓN DE REPORTE PARA EL RECIBO DE NÓMINA
+            Define cómo Odoo debe generar el PDF para un 'hr.payslip'.
+            Es autocontenido y no depende de 'l10n_co_edi'.
+        -->
+        <record id="action_report_hr_payslip_l10n_co_nomina" model="ir.actions.report">
+            <field name="name">Representación Gráfica Nómina Electrónica</field>
+            <field name="model">hr.payslip</field>
+            <field name="report_type">qweb-pdf</field>
+            <!-- El nombre del reporte debe ser único y apunta al template de abajo -->
+            <field name="report_name">l10n_co_nomina.report_template_hr_payslip_l10n_co</field>
+            <field name="report_file">l10n_co_nomina.report_template_hr_payslip_l10n_co</field>
+            <field name="print_report_name">'Nómina Electrónica - %s' % (object.number)</field>
+            <!-- No lo enlazamos al menú de "Imprimir" por ahora para no causar conflictos -->
+            <field name="binding_model_id" eval="False"/>
+        </record>
+
+        <!-- 
+            2. TEMPLATE QWEB PARA EL PDF
+            Este es el diseño visual del reporte. Es simple y solo usa campos que
+            existen en el modelo 'hr.payslip', evitando errores.
+        -->
+        <template id="report_template_hr_payslip_l10n_co">
+            <t t-call="web.html_container">
+                <t t-foreach="docs" t-as="o">
+                    <t t-call="web.external_layout">
+                        <div class="page">
+                            <h2>Representación Gráfica de Nómina Electrónica</h2>
+                            <div class="row mt-4 mb-4">
+                                <div class="col-6">
+                                    <strong>Empleado:</strong>
+                                    <p t-field="o.employee_id.name"/>
+                                    <strong>Periodo:</strong>
+                                    <p><span t-field="o.date_from"/> a <span t-field="o.date_to"/></p>
+                                </div>
+                                <div class="col-6 text-end">
+                                    <strong>Recibo N°:</strong>
+                                    <p t-field="o.number"/>
+                                </div>
+                            </div>
+
+                            <p>Este documento es una representación gráfica de un documento electrónico de Nómina Individual.</p>
+                            <hr/>
+
+                            <h4>Identificación del Documento</h4>
+                            <p>
+                                <strong>CUNE (Código Único de Nómina Electrónica):</strong><br/>
+                                <span t-field="o.edi_uuid" class="text-break"/>
+                            </p>
+                            
+                            <div class="row">
+                                <div class="col-6">
+                                    <strong>Estado en la DIAN:</strong>
+                                    <p><span t-field="o.edi_status_code"/></p>
+                                </div>
+                                <div class="col-6">
+                                    <strong>Mensaje de la DIAN:</strong>
+                                    <p><span t-field="o.edi_status_message" class="text-break"/></p>
+                                </div>
+                            </div>
+                            
+                            <div class="oe_structure"/>
+                        </div>
+                    </t>
+                </t>
+            </t>
+        </template>
+    </data>
+</odoo>
