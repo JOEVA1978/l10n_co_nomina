@@ -9,7 +9,7 @@
     'author': 'Inencon SAS / Colombia',
     'license': 'LGPL-3',
     'category': 'Human Resources/Payroll',
-    'version': '18.0.1.0.0',
+    'version': '17.0.1.0.0',
     'website': "https://www.inenconsas.com",
     'images': ['static/images/main_screenshot.png'],
     'support': 'info@inenconsas.com',
