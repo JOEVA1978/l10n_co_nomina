@@ -11,6 +11,7 @@
     'website': "https://www.inenconsas.com",
     'support': 'info@inenconsas.com',
     'depends': [
+<<<<<<< Updated upstream
         'hr_contract',
         'hr_payroll',
         'hr_payroll_account',   # <— añade esto si posteas a contabilidad
@@ -21,6 +22,18 @@
         'account_edi',
         'l10n_co_edi',
         'mail',
+=======
+            'hr_contract',
+            'hr_payroll',  
+            'account',     
+            'l10n_latam_base',   
+            'hr_holidays',
+            'l10n_co',
+            'account_edi',
+            'l10n_co_edi',
+            'l10n_co_dian',
+            'mail',
+>>>>>>> Stashed changes
     ],
     'data': [
         'data/resource_calendar_data.xml',
